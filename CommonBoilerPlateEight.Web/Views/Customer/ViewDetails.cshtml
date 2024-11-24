@@ -1,0 +1,81 @@
+﻿@model CustomerResponseViewModel
+@using CommonBoilerPlateEight.Domain.Enums
+
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-title">@_CommonLocalizer["CustomerDetails"]</h6>
+
+                <div class="table-responsive">
+                    <table class="table">
+
+                        <tbody>
+                            <tr>
+                                <td colspan="2"><h3>@_CommonLocalizer["Details"]</h3></td>
+                            </tr>
+                            <tr>
+                                <td> @_CommonLocalizer["Image"]</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                   <img class="img-lg" src="@(!string.IsNullOrEmpty(Model.ProfileImage) ? Model.ProfileImage :"/images/others/placeholder.jpg")" alt="" id="profileImage" style="width: 150px; height: 150px; object-fit: cover; border: 1px solid #ccc;">
+                                </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td> @_CommonLocalizer["FullName"]</td>
+                                <td> @Model.FullName</td>
+                            </tr>
+                            <tr>
+                                <td>  @_CommonLocalizer["Mobile"]</td>
+                                <td>(@Model.CountryDialCode)@Model.MobileNumber</td>
+                            </tr>
+                            <tr>
+                                <td> @_CommonLocalizer["Email"]</td>
+                                <td> @Model.Email</td>
+                            </tr>
+                            <tr>
+                                <td>@_CommonLocalizer["CreatedBy"]</td>
+                                <td> @Model.CreatedBy</td>
+                            </tr>
+                            <tr>
+                                <td> @_CommonLocalizer["Interests"]</td>
+                                <td> @Model.CelebrityTypes</td>
+                            </tr>
+                           
+                             <tr>
+                                    <td> @_CommonLocalizer["Gender"]</td>
+                                    <td> @Model.Gender</td>
+                             </tr>
+                          
+                            <tr>
+                                <td> @_CommonLocalizer["Status"]</td>
+                                <td>
+                                    @if (Model.Status == StatusTypeEnum.Pending.ToString())
+                                    {
+                                        <span class="text-primary">@Model.Status</span>
+                                    }
+                                    else if (Model.Status == StatusTypeEnum.Approved.ToString())
+                                    {
+                                        <span class="text-success">@Model.Status</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-danger">@Model.Status</span>
+                                    }
+
+                                </td>
+                            </tr>
+                           
+                          
+                        </tbody>
+                    </table>
+
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+

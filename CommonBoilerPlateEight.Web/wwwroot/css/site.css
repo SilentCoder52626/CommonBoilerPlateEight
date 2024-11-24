@@ -1,0 +1,112 @@
+html {
+    font-size: 14px;
+    position: relative;
+    min-height: 100%;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+
+.class-white {
+    color: #fff
+}
+
+.feather-16 {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.table > :not(caption) > * > * {
+    padding: 0.45rem 0.85rem !important;
+}
+
+.status-onwaytopickup {
+    color: #0F6BA1;
+}
+
+.status-arrivalatpickup {
+    color: #0F6BA1;
+}
+
+.status-goingtolocation {
+    color: #0F6BA1;
+}
+
+.status-arrivalatlocation {
+    color: #0F6BA1;
+}
+
+.status-accepted {
+    color: #299D00;
+}
+
+.status-cancelled {
+    color: #E35B49;
+}
+
+.status-pickedup {
+    color: blue;
+}
+
+.status-intransit {
+    color: yellow;
+}
+
+.status-delivered {
+    color: #299D00;
+}
+
+.status-inwaiting {
+    color: #0F6BA1;
+}
+
+.disablePointerEvents {
+    background: #404040;
+    pointer-events: none
+}
+
+
+
+.buttons-excel {
+    background-color: #28a327 !important
+}
+
+.buttons-pdf {
+    background-color: #cd1616 !important
+}
+
+.buttons-copy {
+    background-color: #727272 !important
+}
+
+.buttons-print {
+    background-color: #b7a904 !important;
+    margin-right: 5px;
+    margin-bottom: 2px
+}
+
+.buttons-html5 {
+    margin-right: 5px;
+    margin-bottom: 2px
+}
+
+.odd:hover, .even:hover {
+    background: #696666;
+}
+
+
+.hidden {
+    display: none;
+}

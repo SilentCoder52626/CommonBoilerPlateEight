@@ -1,0 +1,22 @@
+﻿@* @model DeleteModalViewModel
+
+<div class="modal fade bs-delete-modal" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header alert-danger">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
+            </div>
+            <div class="modal-body">
+              Are You Sure To Delete ?
+            </div>
+            <div class="modal-footer">
+                <form id="deleteForm" method="post" asp-controller="@Model.Controller" asp-action="@Model.Action">
+                    <input type="hidden" name="Id" id="DeleteId" />
+                    <button type="submit" class="btn btn-danger btn-xs">@_CommonLocalizer["Delete"]</button>
+                </form>
+                <button type="button" class="btn btn-secondary btn-xs" data-bs-dismiss="modal">@_CommonLocalizer["Cancel"]</button>
+            </div>
+        </div>
+    </div>
+</div> *@

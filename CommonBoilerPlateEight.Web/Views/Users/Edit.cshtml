@@ -1,0 +1,63 @@
+﻿@model UpdateUserViewModel
+@{
+    var Roles = ViewBag.Roles as List<RoleViewModel> ?? new List<RoleViewModel>();
+}
+<div>
+
+    <nav class="page-breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">@_CommonLocalizer["User"]</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@_CommonLocalizer["Edit"]</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <div class="col-md-6 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+
+                    <form class="forms-sample" method="post" asp-controller="Users" asp-action="Edit">
+                        <input type="hidden" asp-for="Id"/>
+                        <div class="mb-3">
+                            <label class="form-label">@_CommonLocalizer["FullName"]</label>
+                            <input asp-for="FullName" class="form-control" placeholder="@_CommonLocalizer["FullName"]">
+                            <span asp-validation-for="FullName" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">@_CommonLocalizer["UserName"]</label>
+                            <input asp-for="UserName" class="form-control" placeholder="@_CommonLocalizer["UserName"]">
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">@_CommonLocalizer["Email"]</label>
+                            <input asp-for="EmailAddress" class="form-control" autocomplete="off" placeholder="@_CommonLocalizer["Email"]">
+                            <span asp-validation-for="EmailAddress" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">@_CommonLocalizer["Mobile"]</label>
+                            <input asp-for="PhoneNumber" class="form-control" placeholder="@_CommonLocalizer["Mobile"]">
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">@_CommonLocalizer["Role"]</label>
+                            @Html.DropDownListFor(a => a.RoleId, new SelectList(Roles, "Id", "Name"), _CommonLocalizer["Select"] , new { @class = "form-control" })
+                            <span asp-validation-for="RoleId" class="text-danger"></span>
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-outline-primary btn-icon-text mb-2 mb-md-0">
+                                @_CommonLocalizer["SaveBtn"]
+                            </button>
+
+                            <a asp-controller="Users" asp-action="Index" class="btn btn-outline-info btn-icon-text mb-2 mb-md-0">
+                                @_CommonLocalizer["CancelBtn"]
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

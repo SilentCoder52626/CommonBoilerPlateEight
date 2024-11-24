@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html>
+<html lang="@_CommonLocalizer["LanguageCode"]" dir="@_CommonLocalizer["Dir"]">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="CommonBoilerPlateEight">
+    <meta name="author" content="CommonBoilerPlateEight">
+    <meta name="keywords" content="CommonBoilerPlateEight">
+
+    <title>CommonBoilerPlateEight</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <!-- End fonts -->
+    <!-- core:css -->
+    <link rel="stylesheet" href="~/vendors/core/core.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <link href="~/vendors/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="~/vendors/flatpickr/flatpickr.min.css">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="~/fonts/feather-font/css/iconfont.css">
+    <link rel="stylesheet" href="~/vendors/flag-icon-css/css/flag-icon.min.css">
+    <link rel="stylesheet" href="~/vendors/datatables.net-bs5/datatables.bootstrap5.dist.css">
+    <link rel="stylesheet" href="~/vendors/datatables.net-bs5/buttons.bootstrap5.dist.css">
+    <link rel="stylesheet" href="~/vendors/datatables.net-bs5/responsive.bootstrap5.dist.css">
+    <link rel="stylesheet" href="~/fonts/fontawesome.dist.css">
+    <link rel="stylesheet" href="~/vendors/spinkit/spinkit.dist.css">
+    <link rel="stylesheet" href="~/vendors/select2/css/select2.min.css">
+    <link rel="stylesheet" href="~/vendors/flatpickr/flatpickr.min.css">
+
+    <!-- endinject -->
+    <!-- Layout styles -->
+    <link rel="stylesheet" href="~/css/@(_CommonLocalizer["CoreStyle"]).css" asp-append-version="true">
+    <!-- End layout styles -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true">
+    <link rel="shortcut icon" href="~/images/favicon.png" />
+    @await RenderSectionAsync("Styles", false)
+</head>
+<body>
+    <div class="main-wrapper">
+
+        <!-- partial:partials/_sidebar.html -->
+        @await Html.PartialAsync("_Sidebar")
+        <!-- partial -->
+
+        <div class="page-wrapper">
+            <!-- partial:partials/_navbar.html -->
+            @await Html.PartialAsync("_Navbar")
+            <!-- partial -->
+            <div class="page-content">
+                <nav class="page-breadcrumb">
+                    <ol class="breadcrumb">
+
+                        <li class="breadcrumb-item">
+                            <h5>
+                                @if (!string.IsNullOrEmpty(ViewBag.ModuleIcon))
+                                {
+                                    <i class="link-icon" data-feather="@ViewBag.ModuleIcon"></i>
+                                }
+                                <span>
+                                    @ViewBag.ModuleName
+                                </span>
+                            </h5>
+                        </li>
+
+                    </ol>
+                </nav>
+
+                @RenderBody()
+
+            </div>
+            <!-- partial:partials/_footer.html -->
+            <footer class="footer d-flex flex-column flex-md-row align-items-center justify-content-between px-4 py-3 border-top small">
+                <p class="text-muted mb-1 mb-md-0">@_CommonLocalizer["Copyright"] © @DateTime.Now.Year <a href="https://www.nobleui.com" target="_blank">@_CommonLocalizer["CommonBoilerPlateEight"]</a>.</p>
+                <p class="text-muted">Common World <i class="mb-1 text-primary ms-1 icon-sm" data-feather="heart"></i></p>
+            </footer>
+        </div>
+    </div>
+
+    <!-- core:js -->
+    <script src="~/vendors/core/core.js"></script>
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <script src="~/js/sweetalert.js"></script>
+    <script src="~/vendors/datatables.net/jquery.dataTables.js"></script>
+    <script src="~/vendors/datatables.net-bs5/datatables-bootstrap5.dist.js"></script>
+    <script src="~/vendors/block-ui/block-ui.dist.js"></script>
+    <script src="~/vendors/select2/js/select2.min.js"></script>
+    <script src="~/vendors/flatpickr/flatpickr.min.js"></script>
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="~/vendors/feather-icons/feather.min.js"></script>
+    <script src="~/js/template.js" asp-append-version="true"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page -->
+    <script src="~/vendors/apexcharts/apexcharts.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <!-- End custom js for this page -->
+    @await Html.PartialAsync("_notificationPartial")
+    @await RenderSectionAsync("Scripts", false)
+
+</body>
+</html>    

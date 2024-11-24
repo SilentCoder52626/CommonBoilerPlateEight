@@ -1,0 +1,149 @@
+﻿@model X.PagedList.IPagedList<CountryResponseViewModel>
+@{
+    ViewBag.ModuleName = _CommonLocalizer["Country"];
+    ViewBag.ModuleIcon = "globe";
+}
+<div>
+    <div class="row">
+        <div class="col-md-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row card-title align-middle mb-5">
+                        <div class="col-md-9 align-items-center d-flex mt-1">
+                        </div>
+                        <div class="col-md-3 mt-1">
+                            <form asp-controller="Country" asp-action="Index" method="get">
+                                <div class="input-group">
+                                    <input type="text" name="searchWord" class="form-control" value="@(ViewBag.CurrentSearchWord as string)" placeholder="@_CommonLocalizer["Search"]" aria-describedby="search-addon">
+                                    <button type="submit" class="input-group-text btn btn-primary" id="search-addon"><i class="btn-icon-prepend" data-feather="search"></i></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <hr style="border: 1px dashed #000" />
+
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th class="text-white fw-bold"><i class="link-icon feather-16" data-feather="edit"></i> @_CommonLocalizer["Name"]</th>
+                                    <th class="text-white fw-bold text-center"><i class="link-icon feather-16" data-feather="edit"></i>@_CommonLocalizer["DialCode"]</th>
+                                    <th class="text-white fw-bold text-center"><i class="link-icon feather-16" data-feather="edit"></i> @_CommonLocalizer["Code"]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.Any())
+                                {
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@item.Name</td>
+                                            <td class="text-center">@item.DialCode</td>
+                                            <td class="text-center">@item.Code</td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="3" class="text-center">@_CommonLocalizer["NoRecords"]</td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+@if (Model.Any() && Model.PageCount > 1)
+{
+    <div class="pagination-area">
+        @Html.PagedListPagerBT4(
+                Model,
+                page => Url.Action("Index", "Country",
+                new
+                {
+                    page = page,
+                    searchWord = ViewBag.CurrentSearchWord ?? string.Empty
+                }
+                )!
+                )
+    </div>
+}
+
+
+
+
+
+
+
+@section Scripts {
+    <script>
+
+        $(document).on("click", ".activate", function () {
+            const title = "Do you really want to activate?";
+            const id = $(this).attr("data-id");
+            ShowDialog("Activate", title, "warning").then((result) => {
+                if (result.isConfirmed) {
+                    blockwindow();
+                    $.ajax({
+                        type: "Patch",
+                        url: "/CelebrityTypes/Activate?id=" + id,
+                        success: function (response) {
+                            if (response.Status == "Success") {
+                                SuccessToast(response.Message);
+                                window.location.reload();
+                            }
+                            else {
+                                InfoToast(response.Errors.join("\n"))
+                            }
+                            unblockwindow()
+                        },
+                        error: function (response) {
+                            unblockwindow();
+                            handleAjaxError(response)
+                        },
+                    });
+                } else {
+                }
+            });
+            return false;
+        })
+
+        $(document).on("click", ".deactivate", function () {
+            const title = "Do you really want to deactivate?";
+            const id = $(this).attr("data-id");
+            ShowDialog("Deactivate", title, "warning").then((result) => {
+                if (result.isConfirmed) {
+                    blockwindow();
+                    $.ajax({
+                        type: "Patch",
+                        url: "/CelebrityTypes/Deactivate?id=" + id,
+                        success: function (response) {
+                            if (response.Status == "Success") {
+                                SuccessToast(response.Message);
+                                window.location.reload();
+                            }
+                            else {
+                                InfoToast(response.Errors.join("\n"))
+                            }
+                            unblockwindow()
+                        },
+                        error: function (response) {
+                            unblockwindow();
+                            handleAjaxError(response)
+                        },
+                    });
+                } else {
+                }
+            });
+            return false;
+        })
+
+    </script>
+}

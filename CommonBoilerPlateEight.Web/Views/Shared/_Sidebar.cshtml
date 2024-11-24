@@ -1,0 +1,131 @@
+﻿<nav class="sidebar">
+    <div class="sidebar-header">
+        <a href="#" class="sidebar-brand">
+            Common<span>World</span>
+        </a>
+        <div class="sidebar-toggler not-active">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+    <div class="sidebar-body">
+        <ul class="nav">
+            <li class="nav-item nav-category">Main</li>
+            <li class="nav-item" active-when-controllers="Home" active-when-actions="Index">
+                <a href="@Url.Action("Index", "Home")" class="nav-link">
+                    <i class="link-icon" data-feather="box"></i>
+                    <span class="link-title">@_CommonLocalizer["Home"]</span>
+                </a>
+            </li>
+
+
+            <li class="nav-item nav-category">Modules</li>
+            <li class="nav-item" active-when-controllers="Celebrity" active-when-actions="Index,Create, Edit,EditBasicDetail,Pending,Rejected,Approved,ViewDetails">
+                <a class="nav-link" data-bs-toggle="collapse" href="#celebrity" role="button" aria-expanded="false">
+                    <i class="link-icon" data-feather="users"></i>
+                    <span class="link-title">@_CommonLocalizer["Celebrity"]</span>
+                    <i class="link-arrow" data-feather="chevron-down"></i>
+                </a>
+                <div class="collapse" id="celebrity">
+                    <ul class="nav sub-menu">
+                        <li class="nav-item">
+                            <a href="@Url.Action("Create", "Celebrity")" class="nav-link" active-when-controllers="Celebrity" active-when-actions="Create">@_CommonLocalizer["Create"]</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index", "Celebrity")" class="nav-link" active-when-controllers="Celebrity" active-when-actions="Index">@_CommonLocalizer["All"]</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Pending", "Celebrity")" class="nav-link" active-when-controllers="Celebrity" active-when-actions="Pending">@_CommonLocalizer["Pending"]</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Approved", "Celebrity")" class="nav-link" active-when-controllers="Celebrity" active-when-actions="Approved">@_CommonLocalizer["Approved"]</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Rejected", "Celebrity")" class="nav-link" active-when-controllers="Celebrity" active-when-actions="Rejected">@_CommonLocalizer["Rejected"]</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+            <li class="nav-item" active-when-controllers="Customer" active-when-actions="Index,Create,Edit">
+                <a href="@Url.Action("Index", "Customer")" class="nav-link">
+                    <i class="link-icon" data-feather="users"></i>
+                    <span class="link-title">@_CommonLocalizer["Customer"]</span>
+                </a>
+            </li>
+
+            <li class="nav-item" active-when-controllers="Users" active-when-actions="Index,Create,Edit">
+                <a href="@Url.Action("Index", "Users")" class="nav-link">
+                    <i class="link-icon" data-feather="users"></i>
+                    <span class="link-title">@_CommonLocalizer["User"]</span>
+                </a>
+            </li>
+
+            <li class="nav-item nav-category">Celebrity Setups</li>
+            <li class="nav-item" active-when-controllers="CelebritySchedule" active-when-actions="Index,Create,Edit">
+                <a href="@Url.Action("Index", "CelebritySchedule")" class="nav-link">
+                    <i class="link-icon" data-feather="anchor"></i>
+                    <span class="link-title">@_CommonLocalizer["CelebritySchedule"]</span>
+                </a>
+            </li>
+            <li class="nav-item" active-when-controllers="Users" active-when-actions="Index,Create,Update">
+                <a href="@Url.Action("Index", "CelebrityTypes")" class="nav-link">
+                    <i class="link-icon" data-feather="anchor"></i>
+                    <span class="link-title">@_CommonLocalizer["CelebrityType"]</span>
+                </a>
+            </li>
+
+            <li class="nav-item" active-when-controllers="CelebrityLocation" active-when-actions="Index,Create,Edit">
+                <a href="@Url.Action("Index", "CelebrityLocation")" class="nav-link">
+                    <i class="link-icon" data-feather="globe"></i>
+                    <span class="link-title">@_CommonLocalizer["CelebrityLocation"]</span>
+                </a>
+            </li>
+
+            <li class="nav-item" active-when-controllers="Wallets" active-when-actions="Index">
+                <a href="@Url.Action("Index", "Wallet")" class="nav-link">
+                    <i class="link-icon" data-feather="anchor"></i>
+                    <span class="link-title">@_CommonLocalizer["Wallet"]</span>
+                </a>
+            </li>
+            <li class="nav-item" active-when-controllers="CelebrityReviews" active-when-actions="Index">
+                <a href="@Url.Action("Index", "CelebrityReviews")" class="nav-link">
+                    <i class="link-icon" data-feather="anchor"></i>
+                    <span class="link-title">@_CommonLocalizer["CelebrityReviews"]</span>
+                </a>
+            </li>
+
+            <li class="nav-item nav-category">Setups</li>
+
+            <li class="nav-item" active-when-controllers="Users" active-when-actions="Index,Create,Update">
+                <a href="@Url.Action("Index", "CompanyTypes")" class="nav-link">
+                    <i class="link-icon" data-feather="anchor"></i>
+                    <span class="link-title">@_CommonLocalizer["CompanyType"]</span>
+                </a>
+            </li>
+
+            
+             <li class="nav-item" active-when-controllers="Question" active-when-actions="Index,Create,Edit">
+                <a href="@Url.Action("Index", "Question")" class="nav-link">
+                    <i class="link-icon" data-feather="help-circle"></i>
+                    <span class="link-title">@_CommonLocalizer["AdTypeQuestion"]</span>
+                </a>
+            </li>
+
+            <li class="nav-item" active-when-controllers="Country" active-when-actions="Index">
+                <a href="@Url.Action("Index", "Country")" class="nav-link">
+                    <i class="link-icon" data-feather="globe"></i>
+                    <span class="link-title">@_CommonLocalizer["Country"]</span>
+                </a>
+            </li>
+
+            <li class="nav-item" active-when-controllers="Setting" active-when-actions="EmailSetup">
+                <a href="@Url.Action("EmailSetup", "Setting")" class="nav-link">
+                    <i class="link-icon" data-feather="mail"></i>
+                    <span class="link-title">@_CommonLocalizer["EmailSetting"]</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>

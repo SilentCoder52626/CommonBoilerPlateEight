@@ -1,0 +1,149 @@
+﻿@model CelebrityIndexAndFilterViewModel
+
+@{
+    ViewBag.ModuleName = _CommonLocalizer["Celebrity"];
+    ViewBag.ModuleIcon = "user";
+    var countries = ViewBag.Countries as List<CountryResponseViewModel> ?? new List<CountryResponseViewModel>();
+    var celebrityTypes = ViewBag.CelebrityTypes as List<CelebrityTypeResponseModel> ?? new List<CelebrityTypeResponseModel>();
+    var genders = EnumExtensions.ToDropdownList<GenderTypeEnum>();
+}
+
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="row card-title align-middle mb-5">
+                    <div class="col-md-12 align-items-center d-flex mt-1">
+                        <a href="@Url.Action("Create", "Celebrity")" class="btn btn-primary btn-xs btn-icon-text">
+                            <i class="btn-icon-prepend" data-feather="plus"></i> @_CommonLocalizer["Create"]
+                        </a>
+                    </div>
+                    <div class="col-md-12 mt-1">
+                        <form asp-controller="Celebrity" asp-action="Index" method="get">
+                            <div class="card-header">
+
+                                <div class="d-flex justify-content-between align-items-center row py-3 gap-3 gap-md-0">
+                                    <form>
+                                        <div class="row ">
+
+                                            <div class="col-md-2">
+                                                <label class="form-label">@_CommonLocalizer["Search"]</label>
+                                                <input type="text" placeholder="@_CommonLocalizer["Search"]" class="form-control" asp-for="@Model.Filter.Name">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="form-label">@_CommonLocalizer["Type"]</label>
+                                                @Html.DropDownListFor(a => a.Filter.CelebrityTypes, new SelectList(celebrityTypes, "Id", "Name"), _CommonLocalizer["Select"], new { @class = "form-control select2Input", multiple = "multiple", data_val = "false" })
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <label class="form-label">@_CommonLocalizer["Gender"]</label>
+                                                @Html.DropDownListFor(a => a.Filter.Gender, new SelectList(genders, "Text", "Value"), _CommonLocalizer["Select"], new { @class = "form-control select2Input" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="form-label">@_CommonLocalizer["FromPrice"]</label>
+                                                <input type="number" class="form-control" asp-for="@Model.Filter.FromPrice" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="form-label">@_CommonLocalizer["ToPrice"]</label>
+                                                <input type="number" class="form-control" asp-for="@Model.Filter.ToPrice" />
+                                            </div>
+
+                                            <div class="col-md-2 mt-4">
+
+                                                <button type="submit" id="filter" class="mt-1 search-button btn btn-primary waves-effect waves-light  form-control">@_CommonLocalizer["Filter"]</button>
+
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+
+                        </form>
+                    </div>
+                </div>
+
+                <hr style="border: 1px dashed #000" />
+
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="bg-primary">
+                            <tr>
+                                <th class="text-white fw-bold"><i class="link-icon feather-16" data-feather="edit"></i>@_CommonLocalizer["Image"]</th>
+                                <th class="text-white fw-bold"><i class="link-icon feather-16" data-feather="user"></i>@_CommonLocalizer["FullName"]</th>
+                                <th class="text-white fw-bold"><i class="link-icon feather-16" data-feather="truck"></i>@_CommonLocalizer["Mobile"]</th>
+                                <th class="text-white fw-bold"><i class="link-icon feather-16" data-feather="edit"></i>@_CommonLocalizer["Email"]</th>
+                                <th class="text-white fw-bold"><i class="link-icon feather-16" data-feather="edit"></i>@_CommonLocalizer["Type"]</th>
+                                <th class="text-white fw-bold"><i class="link-icon feather-16" data-feather="edit"></i>@_CommonLocalizer["TimeToCall"]</th>
+                                <th class="text-white fw-bold"><i class="link-icon feather-16" data-feather="edit"></i>@_CommonLocalizer["Status"]</th>
+                                <th class="text-white fw-bold"><i class="link-icon feather-16" data-feather="check"></i>@_CommonLocalizer["Price/Post"]</th>
+                                <th class="text-white fw-bold"><i class="link-icon feather-16" data-feather="edit"></i> @_CommonLocalizer["Price/Event"]</th>
+                                <th class="text-white fw-bold"><i class="link-icon feather-16" data-feather="edit"></i>@_CommonLocalizer["Price/Delivery"]</th>
+                                <th class="text-white fw-bold text-center"><i class="link-icon feather-16" data-feather="settings"></i>@_CommonLocalizer["Action"]</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Results)
+                            {
+                                <tr>
+
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img class="img-lg rounded-circle" src="@(!string.IsNullOrEmpty(item.ProfileImageURL)? item.ProfileImageURL :"/images/others/placeholder.jpg")" alt="" id="profileImage">
+                                        </div>
+                                    </td>
+                                    <td>@item.FullName</td>
+                                    <td>(@item.DialCode) @item.MobileNumber</td>
+                                    <td>@item.Email</td>
+                                    <td>@item.CelebrityType</td>
+                                    <td>@(item.TimeToCall.HasValue ? item.TimeToCall.Value.ToString("yyyy-MM-dd hh:mm tt") : string.Empty)</td>
+                                    <td>@item.Status</td>
+                                    <td>@item.PricePerAd</td>
+                                    <td>@item.PricePerEvent</td>
+                                    <td>@item.PricePerDelivery</td>
+                                    <td class="text-center">
+                                        <a href="@Url.Action("ViewDetails", "Celebrity", new { id = item.Id })" class="text-primary btn-icon-text btn-xs" target="_blank" title="View">
+                                            <i class="btn-icon-prepend fa fa-eye"></i>
+                                        </a> |
+                                        @if (item.Status != StatusTypeEnum.Rejected.ToString())
+                                        {
+
+                                            <a href="@Url.Action("Edit", "Celebrity", new { id = item.Id })" class="text-primary btn-icon-text btn-xs" title="Update">
+                                                <i class="btn-icon-prepend fa fa-edit"></i>
+                                            </a>
+                                        }
+
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Model.Results.Any() && Model.Results.PageCount > 1)
+{
+    <div class="pagination-area">
+        @Html.PagedListPagerBT4(
+                Model.Results,
+                page => Url.Action("Index", "Celebrity",
+                new CelebrityFilterViewModel
+    {
+        Status = Model.Filter.Status,
+        Name = Model.Filter.Name,
+        FromPrice = Model.Filter.FromPrice,
+        ToPrice = Model.Filter.ToPrice,
+        CelebrityTypes = Model.Filter.CelebrityTypes,
+        Gender = Model.Filter.Gender,
+        PageNumber = page
+    })!
+                )
+    </div>
+}
+
+
+
+

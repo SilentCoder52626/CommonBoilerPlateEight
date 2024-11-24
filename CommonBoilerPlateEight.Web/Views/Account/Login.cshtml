@@ -1,0 +1,35 @@
+﻿@model UserLoginViewModel
+@{
+    Layout = "~/Views/Shared/_BlankLayout.cshtml";
+}
+
+<div class="row w-100 mx-0 auth-page">
+    <div class="col-md-8 col-xl-6 mx-auto">
+        <div class="card">
+            <div class="row">
+                <div class="col-md-12 ps-md-0">
+                    <div class="auth-form-wrapper px-4 py-5">
+                        <a href="#" class="noble-ui-logo d-block mb-2 text-center">Common<span>World</span></a>
+                        <h5 class="text-muted fw-normal mb-4">@_CommonLocalizer["LoginMsg"]</h5>
+                        <form class="forms-sample" method="post" asp-controller="Account" asp-action="Login">
+                            <div class="mb-3">
+                                <label class="form-label">@_CommonLocalizer["UserName"]</label>
+                                <input asp-for="UserName" class="form-control" placeholder="@_CommonLocalizer["UserName"]">
+                                <span asp-validation-for="UserName" class="text-danger"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">@_CommonLocalizer["Password"]</label>
+                                <input asp-for="Password" class="form-control" type="password" placeholder="@_CommonLocalizer["Password"]">
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                            <input type="hidden" asp-for="ReturnUrl" />
+                            <div>
+                                <button type="submit" class="btn btn-primary me-2 mb-2 mb-md-0 text-white">Login</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

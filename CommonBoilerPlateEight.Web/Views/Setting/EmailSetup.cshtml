@@ -1,0 +1,74 @@
+﻿@model EmailSetupViewModel
+
+@{
+    ViewBag.ModuleName = _CommonLocalizer["EmailSetting"];
+    ViewBag.ModuleIcon = "mail";
+}
+
+<div class="row">
+    <div class="col-md-8 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <form asp-action="EmailSetup" asp-controller="Setting" method="post" class="forms-sample">
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label class="form-label">
+                                        <i class="link-icon feather-16" data-feather="edit"></i> @_CommonLocalizer["HostServer"]
+                                    </label>
+                                    <input type="text" asp-for="Host" class="form-control" autocomplete="off" placeholder="eg: smtp.gmail.com">
+                                    <span asp-validation-for="Host" class="text-danger"></span>
+                                </div>
+
+                                <div class="col-md-12 mb-3">
+                                    <label class="form-label">
+                                        <i class="link-icon feather-16" data-feather="edit"></i> @_CommonLocalizer["Port"]
+                                    </label>
+                                    <input type="number" asp-for="Port" class="form-control" autocomplete="off" placeholder="eg: 587">
+                                    <span asp-validation-for="Port" class="text-danger"></span>
+                                </div>
+
+                                <div class="col-md-12 mb-3">
+                                    <label class="form-label">
+                                        <i class="link-icon feather-16" data-feather="edit"></i> @_CommonLocalizer["UserName"]
+                                    </label>
+                                    <input type="text" asp-for="UserName" class="form-control" autocomplete="new-password" placeholder="eg: example.gmail.com">
+                                    <span asp-validation-for="UserName" class="text-danger"></span>
+                                </div>
+
+                                <div class="col-md-12 mb-3">
+                                    <label class="form-label">
+                                        <i class="link-icon feather-16" data-feather="edit"></i>@_CommonLocalizer["Password"]
+                                    </label>
+                                    <input type="password" asp-for="Password" class="form-control" autocomplete="new-password" value="@Model.Password">
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+
+                                <div class="col-md-12 mb-3">
+                                    <label class="form-label">
+                                        <i class="link-icon feather-16" data-feather="edit"></i> @_CommonLocalizer["FromEmail"]
+                                    </label>
+                                    <input type="text" asp-for="FromEmail" class="form-control" autocomplete="off" placeholder="eg: example@gmail.com">
+                                    <span asp-validation-for="FromEmail" class="text-danger"></span>
+                                </div>
+
+                                <div class="col-md-12 mb-3">
+                                    <label class="form-label">
+                                        <i class="link-icon feather-16" data-feather="edit"></i> @_CommonLocalizer["FromName"]
+                                    </label>
+                                    <input type="text" asp-for="FromName" class="form-control" autocomplete="off" placeholder="eg : CommonBoilerPlateEight">
+                                    <span asp-validation-for="FromName" class="text-danger"></span>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <button type="submit" class="btn btn-primary me-2">@_CommonLocalizer["SaveBtn"]</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

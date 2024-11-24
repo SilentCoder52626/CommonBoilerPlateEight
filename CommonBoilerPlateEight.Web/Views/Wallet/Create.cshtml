@@ -1,0 +1,27 @@
+﻿@model WalletCreateViewModel
+
+@{
+    ViewBag.ModuleName = _CommonLocalizer["Create Wallet"];
+    ViewBag.ModuleIcon = "wallet";
+}
+
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">@_CommonLocalizer["Create New Wallet"]</h4>
+                <form asp-action="Create" method="post">
+                    <div class="form-group">
+                        <label for="CustomerId">@_CommonLocalizer["Customer ID"]</label>
+                        <input type="number" class="form-control" id="CustomerId" asp-for="CustomerId" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="Balance">@_CommonLocalizer["Balance"]</label>
+                        <input type="number" class="form-control" id="Balance" asp-for="Balance" step="0.01" required />
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">@_CommonLocalizer["Save Wallet"]</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

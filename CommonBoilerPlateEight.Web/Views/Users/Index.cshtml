@@ -1,0 +1,233 @@
+﻿@model X.PagedList.IPagedList<UserResponseViewModel>
+@{
+    ViewBag.ModuleName = _CommonLocalizer["User"];
+    ViewBag.ModuleIcon = "users";
+}
+<div>
+    <div class="row">
+        <div class="col-md-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row card-title align-middle mb-5">
+                        <div class="col-md-9 align-items-center d-flex mt-1">
+                            <a href="@Url.Action("Create", "Users")" class="btn btn-primary btn-xs btn-icon-text">
+                                <i class="btn-icon-prepend" data-feather="plus"></i>@_CommonLocalizer["Create"]
+                            </a>
+                        </div>
+                        <div class="col-md-3 mt-1">
+                            <form asp-controller="Users" asp-action="Index" method="get">
+                                <div class="input-group">
+                                    <input type="text" name="searchWord" class="form-control" value="@(ViewBag.CurrentSearchWord as string)" placeholder="@_CommonLocalizer["Search"]" aria-describedby="search-addon">
+                                    <button type="submit" class="input-group-text btn btn-primary" id="search-addon"><i class="btn-icon-prepend" data-feather="search"></i></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <hr style="border: 1px dashed #000" />
+
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th class="text-white fw-bold"><i class="link-icon feather-16" data-feather="edit"></i> @_CommonLocalizer["FullName"]</th>
+                                    <th class="text-white fw-bold"><i class="link-icon feather-16" data-feather="edit"></i> @_CommonLocalizer["UserName"]</th>
+                                    <th class="text-white fw-bold text-center"><i class="link-icon feather-16" data-feather="mail"></i> @_CommonLocalizer["Email"]</th>
+                                    <th class="text-white fw-bold text-center"><i class="link-icon feather-16" data-feather="smartphone"></i> @_CommonLocalizer["Mobile"]</th>
+                                    <th class="text-white fw-bold text-center"><i class="link-icon feather-16" data-feather="check"></i> @_CommonLocalizer["Status"]</th>
+                                    <th class="text-white fw-bold text-center"><i class="link-icon feather-16" data-feather="settings"></i> @_CommonLocalizer["Action"]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.FullName</td>
+                                        <td class="text-center">@item.UserName</td>
+                                        <td class="text-center">@item.EmailAddress</td>
+                                        <td class="text-center">@item.PhoneNumber</td>
+                                        
+                                        <td class="text-center">
+                                            @if (item.IsBlocked)
+                                            {
+                                                <span class="text-danger"> @_CommonLocalizer["InActive"]</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-success"> @_CommonLocalizer["Active"]</span>
+                                            }
+                                        </td>
+                                        <td class="text-center">
+                                            <a href="@Url.Action("Edit", "Users", new { id = item.Id })" class="text-primary btn-icon-text btn-xs" data-bs-toggle="tooltip" data-bs-placement="top" title="Update">
+                                                <i class="btn-icon-prepend fa fa-edit"></i>
+                                            </a>
+                                            @if (item.IsBlocked)
+                                            {
+                                                <a class="card-link unBlockUser" data-userId="@item.Id" data-bs-toggle="tooltip" data-bs-placement="top" title="Unblock"><i class="fa fa-unlock"></i> </a>
+                                            }
+                                            else
+                                            {
+                                                <a class="card-link blockUser text-danger" data-userId="@item.Id" data-bs-toggle="tooltip" data-bs-placement="top" title="Block"><i class="fa fa-lock"></i></a>
+                                            }
+                                            <a data-userId="@item.Id" class="text-primary btn-icon-text btn-xs reset-password" data-bs-toggle="tooltip" data-bs-placement="top" title="Reset Password">
+                                                <i class="btn-icon-prepend fa fa-sync-alt"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="resetPasswordModel" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content p-3 p-md-5">
+                <button type="button"
+                        class="btn-close btn-pinned"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                <div class="modal-body" id="ResetPasswordContent">
+                  
+                    @await Html.PartialAsync("~/Views/Users/_ResetPassword.cshtml", new ResetPasswordViewModel())
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    @if (Model.Any() && Model.PageCount > 1)
+    {
+        <div class="pagination-area">
+        @Html.PagedListPagerBT4(
+                Model,
+                page => Url.Action("Index", "Users",
+                new
+                {
+                    page = page,
+                    searchWord = ViewBag.CurrentSearchWord ?? string.Empty
+                }
+                )!
+                )
+        </div>
+    }
+
+
+
+
+
+
+
+@section Scripts {
+    <script>
+
+        $(document).on("click", ".reset-password", function () {
+            $("#UserId").val($(this).attr("data-userId"));
+            $("#resetPasswordModel").modal("show");
+
+        })
+        
+        $(document).on("submit", "#resetPasswordForm", function (e) {
+            e.preventDefault();
+            var $form = $(this);
+            $form.data("validator", null);
+            $.validator.unobtrusive.parse($form);
+            $form.validate();
+            let isValid = $form.valid();
+            if (!isValid) {
+                return false;
+            }
+            const data = {
+                UserId :$("#UserId").val(),
+                NewPassword: $("#NewPassword").val(),
+                ConfirmPassword: $("#ConfirmPassword").val()
+            }
+            blockwindow();
+            $.ajax({
+                url: `/Users/ResetPassword`,
+                type: "post",
+                data :data,
+                success: function (result) {
+                    if (result.Status == "Success") {
+                        SuccessToast("Password Reset Successfull");
+                        $("#resetPasswordModel").modal("show");
+                        window.location.reload();
+                    }
+                    else {
+                        InfoToast(result.Errors.join("\n"))
+                    }
+                    unblockwindow()
+                },
+                error: function (response) {               
+                    unblockwindow()
+                    handleAjaxError(response)
+
+                }
+            })
+
+        })
+        $(document).on("click", ".blockUser", function () {
+            const title = "Do you really want to block this user?";
+            const userId = $(this).attr("data-userId");
+            ShowDialog("BlockUser", title, "warning").then((result) => {
+                if (result.isConfirmed) {
+                    blockwindow();
+                    $.ajax({
+                        type: "Patch",
+                        url: "/Users/BlockUser?id=" + userId,
+                        success: function (response) {
+                            if (response.Status == "Success") {
+                                SuccessToast(response.Message);
+                                window.location.reload();
+                            }
+                            else {
+                                InfoToast(response.Errors.join("\n"))
+                            }
+                            unblockwindow()
+                        },
+                        error: function (response) {
+                            unblockwindow();
+                            handleAjaxError(response)
+                        },
+                    });
+                } else {
+                }
+            });
+            return false;
+        })
+
+
+        $(document).on("click", ".unBlockUser", function () {
+            const title = "Do you really want to unblock this user?";
+            const userId = $(this).attr("data-userId");
+            ShowDialog("UnBlockUser", title, "warning").then((result) => {
+                if (result.isConfirmed) {
+                    blockwindow();
+                    $.ajax({
+                        type: "Patch",
+                        url: "/Users/UnBlockUser?id=" + userId,
+                        success: function (response) {
+                            if (response.Status == "Success") {
+                                SuccessToast(response.Message);
+                                window.location.reload();
+                            }
+                            else {
+                                InfoToast(response.Errors.join("\n"))
+                            }
+                            unblockwindow()
+
+                        },
+                        error: function (response) {
+                            unblockwindow();
+                            handleAjaxError(response)
+                        },
+                    });
+                } else {
+                }
+            });
+            return false;
+        })
+    </script>
+}

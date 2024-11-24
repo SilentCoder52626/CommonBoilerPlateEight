@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="Responsive HTML Admin Dashboard Template based on Bootstrap 5">
+    <meta name="author" content="NobleUI">
+    <meta name="keywords" content="nobleui, bootstrap, bootstrap 5, bootstrap5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
+
+    <title>Star Booker</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <!-- End fonts -->
+    <!-- core:css -->
+    <link rel="stylesheet" href="~/vendors/core/core.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <link rel="stylesheet" href="~/vendors/flatpickr/flatpickr.min.css">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="~/fonts/feather-font/css/iconfont.css">
+    <link rel="stylesheet" href="~/vendors/flag-icon-css/css/flag-icon.min.css">
+    <link rel="stylesheet" href="~/vendors/datatables.net-bs5/dataTables.bootstrap5.css">
+    <link rel="stylesheet" href="~/vendors/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/vendors/spinkit/spinkit.dist.css">
+
+    <!-- endinject -->
+    <!-- Layout styles -->
+    <link rel="stylesheet" href="~/css/style.css">
+    <!-- End layout styles -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true">
+    <link rel="shortcut icon" href="~/images/favicon.png" />
+</head>
+<body>
+    <div class="main-wrapper">
+        <div class="page-wrapper full-page">
+            <div class="page-content d-flex align-items-center justify-content-center">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+    <!-- core:js -->
+    <script src="~/vendors/core/core.js"></script>
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <script src="~/vendors/flatpickr/flatpickr.min.js"></script>
+    <script src="~/vendors/apexcharts/apexcharts.min.js"></script>
+    <script src="~/js/sweetalert.js"></script>
+    <script src="~/vendors/datatables.net/jquery.dataTables.js"></script>
+    <script src="~/vendors/datatables.net-bs5/dataTables.bootstrap5.js"></script>
+    <script src="~/vendors/block-ui/block-ui.dist.js"></script>
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="~/vendors/feather-icons/feather.min.js"></script>
+    <script src="~/js/template.js"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page -->
+    <script src="~/js/dashboard-light.js"></script>
+    <script src="~/js/site.js"></script>
+    <!-- End custom js for this page -->
+    @await Html.PartialAsync("_notificationPartial")
+    @await RenderSectionAsync("Scripts", false)
+
+
+</body>
+</html>    

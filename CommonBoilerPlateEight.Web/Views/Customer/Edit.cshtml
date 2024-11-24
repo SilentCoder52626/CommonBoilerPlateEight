@@ -1,0 +1,105 @@
+﻿@model CustomerEditViewModel
+@{
+    ViewBag.ModuleName = _CommonLocalizer["Customer"];
+    ViewBag.ModuleIcon = "user";
+    var countries = ViewBag.Countries as List<CountryResponseViewModel> ?? new List<CountryResponseViewModel>();
+    var celebrityTypes = ViewBag.CelebrityTypes as List<CelebrityTypeResponseModel> ?? new List<CelebrityTypeResponseModel>();
+    var genders = EnumExtensions.ToDropdownList<GenderTypeEnum>();
+}
+
+<div class="row card">
+    <div class="col-md-12 card-body">
+        <form asp-action="Edit" asp-controller="Customer" method="post" class="forms-celebrity" enctype="multipart/form-data">
+            <div class="row">
+                <div class="mt-3">
+                    <div>
+                        <div class="row mb-3">
+                            <label class="col-sm-3 col-form-label">@_CommonLocalizer["Image"]</label>
+                            <div class="col-sm-9">
+                                <div class="d-flex align-items-center">
+                                    <img class="img-lg" src="@(string.IsNullOrEmpty(Model.ProfileImage)? "/images/others/placeholder.jpg":Model.ProfileImage)" alt="" id="profileImage" style="width: 150px; height: 150px; object-fit: cover; border: 1px solid #ccc;">
+                                </div>
+                                <input type="file" class="form-control mt-1" data-image-container="profileImage" asp-for="ProfileImageFile" accept=".jpg, .jpeg, .png" onchange="previewImage(event)">
+                                <span asp-validation-for="ProfileImageFile" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label class="col-sm-3 col-form-label">@_CommonLocalizer["FullName"]</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" asp-for="FullName" placeholder="@_CommonLocalizer["FullName"]">
+                                <span asp-validation-for="FullName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label class="col-sm-3 col-form-label">@_CommonLocalizer["Email"]</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" asp-for="Email" placeholder="@_CommonLocalizer["Email"]">
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-3 col-form-label"> @_CommonLocalizer["Gender"]</label>
+                            <div class="col-sm-9">
+                                @Html.DropDownListFor(a => a.Gender, new SelectList(genders, "Text", "Value"), _CommonLocalizer["Select"], new { @class = "form-control select2Input" })
+                                <span asp-validation-for="Gender" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label class="col-sm-3 col-form-label">@_CommonLocalizer["InterestedCelebrityTypes"]</label>
+                            <div class="col-sm-9">
+                                @Html.DropDownListFor(a => a.CelebrityTypeIds, new SelectList(celebrityTypes, "Id", "Name"), _CommonLocalizer["Select"], new { @class = "form-control select2Input", multiple = "multiple" })
+                                <span asp-validation-for="CelebrityTypeIds" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="exampleInputMobile" class="col-sm-3 col-form-label">@_CommonLocalizer["Mobile"]</label>
+                            <div class="col-sm-3">
+                                <select asp-for="CountryId" class="select-with-flags" style="width: 100%;">
+                                    @foreach (var country in countries)
+                                    {
+                                        <option value="@country.Id" data-flag="@country.Code.ToLower()" data-dial-code="@country.DialCode" data-country="@country.Name">
+                                            @country.DialCode
+                                        </option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="number" class="form-control" asp-for="MobileNumber" placeholder="@_CommonLocalizer["Mobile"]">
+                                <span asp-validation-for="MobileNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+
+
+                        <div class="row mb-3">
+                            <label class="col-sm-3 col-form-label">@_CommonLocalizer["Description"]</label>
+                            <div class="col-sm-9">
+                                <textarea autocomplete="off" class="form-control" asp-for="Description" placeholder="@_CommonLocalizer["Description"]"> </textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="mt-3">
+                <button type="submit" class="btn btn-primary">@_CommonLocalizer["SaveBtn"]</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Serialize the CelebrityTypeIds from Razor to JavaScript
+            var selectedValues = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.CelebrityTypeIds));
+
+            // Set the values for the Select2 dropdown and trigger the change event
+            $('#CelebrityTypeIds').val(selectedValues).trigger('change');
+        });
+    </script>
+}

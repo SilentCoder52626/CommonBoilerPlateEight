@@ -1,0 +1,120 @@
+﻿@model X.PagedList.IPagedList<ReviewDetailViewModel>
+@{
+    ViewBag.ModuleName = _CommonLocalizer["CelebrityReviews"];
+    ViewBag.ModuleIcon = "star";
+}
+<div>
+    <div class="row">
+        <div class="col-md-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row card-title align-middle mb-5">
+                        <div class="col-md-9 align-items-center d-flex mt-1">
+                            <h4>@_CommonLocalizer["CelebrityReviews"]</h4>
+                        </div>
+                    </div>
+
+                    <hr style="border: 1px dashed #000" />
+
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th class="text-white fw-bold">@_CommonLocalizer["Customer"]</th>
+                                    <th class="text-white fw-bold">@_CommonLocalizer["Celebrity"]</th>
+                                    <th class="text-white fw-bold">@_CommonLocalizer["Rating"]</th>
+                                    <th class="text-white fw-bold">@_CommonLocalizer["ReviewText"]</th>
+                                    <th class="text-white fw-bold text-center">@_CommonLocalizer["Status"]</th>
+                                    <th class="text-white fw-bold text-center">@_CommonLocalizer["Action"]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null && Model.Any())
+
+                                {
+                                    @foreach (var review in Model)
+                                    {
+                                        <tr>
+                                            <td>@review.CustomerName</td>
+                                            <td>@review.CelebrityName</td>
+                                            <td>@review.Rating</td>
+                                            <td>@review.ReviewText</td>
+                                            <td class="text-center">
+                                                @if (!review.IsApprovedByAdmin)
+                                                {
+                                                    <span class="text-danger">@_CommonLocalizer["Pending"]</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-success">@_CommonLocalizer["Approved"]</span>
+                                                }
+                                            </td>
+                                            <td class="text-center">
+                                                @if (!review.IsApprovedByAdmin)
+                                                {
+                                                    <a class="approve-review text-success" data-id="@review.Id" data-bs-toggle="tooltip" title="Approve">
+                                                        <i class="fa fa-thumbs-up"></i>
+                                                    </a>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="6" class="text-center">@_CommonLocalizer["NoRecords"]</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Model.Any() && Model.PageCount > 1)
+{
+    <div class="pagination-area">
+        @Html.PagedListPagerBT4(
+                Model,
+                page => Url.Action("Index", "CelebrityReviews",
+                new { page = page })!
+                )
+    </div>
+}
+
+@section Scripts {
+    <script>
+        $(document).on("click", ".approve-review", function () {
+            const id = $(this).data("id");
+            const title = "Do you really want to approve this review?";
+            ShowDialog("Approve", title, "warning").then((result) => {
+                if (result.isConfirmed) {
+                    blockwindow();
+                    $.ajax({
+                        type: "POST",
+                        url: "/CelebrityReviews/Approve",
+                        data: { id: id },
+                        success: function (response) {
+                            if (response.Status === "Success") {
+                                SuccessToast(response.Message);
+                                window.location.reload();
+                            } else {
+                                InfoToast(response.Errors.join("\n"));
+                            }
+                            unblockwindow();
+                        },
+                        error: function (response) {
+                            unblockwindow();
+                            handleAjaxError(response);
+                        },
+                    });
+                }
+            });
+            return false;
+        });
+    </script>
+}

@@ -1,0 +1,29 @@
+﻿@model CompanyTypeCreateViewModel
+
+@{
+    ViewBag.ModuleName = _CommonLocalizer["CompanyType"];
+    ViewBag.ModuleIcon = "anchor";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-6 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <form asp-action="Create" asp-controller="CompanyTypes" method="post" class="forms-sample">
+                            <div class="mb-3">
+                                <label asp-for="Name" class="form-label">
+                                    <i class="link-icon feather-16" data-feather="edit"></i>@_CommonLocalizer["Name"]
+                                </label>
+                                <input type="text" asp-for="@Model.Name" class="form-control" autocomplete="off" placeholder="@_CommonLocalizer["Name"]">
+                                <span asp-validation-for="@Model.Name" class="text-danger"></span>
+                            </div>
+                            <button type="submit" class="btn btn-primary me-2">@_CommonLocalizer["SaveBtn"]</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

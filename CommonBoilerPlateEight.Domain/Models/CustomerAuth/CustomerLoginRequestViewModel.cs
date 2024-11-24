@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CommonBoilerPlateEight.Domain.Models
+{
+    public class CustomerLoginRequestViewModel
+    {
+        public int CountryId { get; set; }
+        [Required(ErrorMessage = "MobileNumber Or Email is required")]
+        public string MobileNumberOrEmail { get; set; }
+        [Required(ErrorMessage = "Password is required")]
+        public string Password { get; set; }
+        [Required(ErrorMessage = "DeviceId is required")]
+        public string DeviceId { get; set; }
+    }
+}

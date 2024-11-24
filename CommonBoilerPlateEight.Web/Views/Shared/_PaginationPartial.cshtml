@@ -1,0 +1,38 @@
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+
+<style>
+	.pagination {
+		display: flex;
+		justify-content: left;
+		margin-top: 20px; /* Increase this value to add more space above */
+	}
+
+		.pagination a, .pagination span {
+			margin: 0 5px;
+			padding: 5px 10px;
+			border: 1px solid #ddd;
+			color: #007bff;
+			text-decoration: none;
+		}
+
+			.pagination a:hover {
+				background-color: #ddd;
+			}
+
+		.pagination .active span {
+			background-color: #007bff;
+			color: white;
+			border: 1px solid #007bff;
+		}
+
+		.pagination .disabled span {
+			color: #aaa;
+		}
+</style>
+<div class="text-center">
+    @{
+        var pageList = new StaticPagedList<object>(Model.data, Model.PageNumber, Model.PageSize, Model.TotalItemCount);
+    }
+    @Html.PagedListPager(pageList, page => Url.Action("List", new { pageNo = page }), PagedListRenderOptions.PageNumbersOnly)
+</div>

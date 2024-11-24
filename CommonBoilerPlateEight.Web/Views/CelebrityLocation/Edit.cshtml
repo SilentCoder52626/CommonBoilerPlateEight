@@ -1,0 +1,100 @@
+﻿@model CelebrityLocationEditViewModel
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration;
+@{
+    ViewBag.ModuleName = _CommonLocalizer["CelebrityLocation"];
+    ViewBag.ModuleIcon = "globe";
+    var googleApi = _configuration["GoogleApi"];
+    var celebrities = ViewBag.Celebrities as List<DropdownDto> ?? new List<DropdownDto>();
+}
+<div class="card">
+    <div class="col-md-12 card-body">
+        <div class="row">
+            <form asp-controller="CelebrityLocation" asp-action="Edit" method="post">
+              <input asp-for="Id" type="hidden"/>
+                <div class="col-md-12 mt-3">
+                    <label for="Location" class="form-label">
+                        <i class="link-icon feather-16" data-feather="map-pin"></i> @_CommonLocalizer["Location"]
+                    </label>
+
+                    <input asp-for="FullAddress" class="form-control mb-1 fullAddress" type="text" placeholder="@_CommonLocalizer["Search"]">
+                    <span asp-validation-for="FullAddress" class="text-danger"></span>
+                    <div id="customerLocationMap" style="height: 350px; width: 100%;"></div>
+
+
+                </div>
+                <div class="col-md-12 mt-3">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Latitude" class="form-label">
+                                <i class="link-icon feather-16" data-feather="map"></i> @_CommonLocalizer["Latitude"]
+                            </label>
+                            <input type="text" asp-for="Latitude" class="form-control disablePointerEvents Latitude" readonly="readonly" autocomplete="off" placeholder="@_CommonLocalizer["Latitude"]">
+                            <span asp-validation-for="Latitude" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Longitude" class="form-label">
+                                <i class="link-icon feather-16" data-feather="map"></i> @_CommonLocalizer["Longitude"]
+                            </label>
+                            <input type="text" asp-for="Longitude" readonly="readonly" class="form-control disablePointerEvents Longitude" autocomplete="off" placeholder="@_CommonLocalizer["Longitude"]">
+                            <span asp-validation-for="Longitude" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Governorate" class="form-label">
+                                <i class="link-icon feather-16" data-feather="flag"></i> @_CommonLocalizer["Governorate"]
+                            </label>
+                            <input type="text" asp-for="Governorate" class="form-control Governorate" autocomplete="off" placeholder="@_CommonLocalizer["Governorate"]">
+                            <span asp-validation-for="Governorate" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Area" class="form-label">
+                                <i class="link-icon feather-16" data-feather="bookmark"></i> @_CommonLocalizer["Area"]
+                            </label>
+                            <input type="text" asp-for="Area" class="form-control Area" autocomplete="off" placeholder="@_CommonLocalizer["Area"]">
+                            <span asp-validation-for="Area" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Block" class="form-label">
+                                <i class="link-icon feather-16" data-feather="check-circle"></i> @_CommonLocalizer["Block"]
+                            </label>
+                            <input type="text" asp-for="Block" class="form-control Block" autocomplete="off" placeholder="@_CommonLocalizer["Block"]">
+                            <span asp-validation-for="Block" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="GooglePlusCode" class="form-label">
+                                <i class="link-icon feather-16" data-feather="check"></i> @_CommonLocalizer["GooglePlusCode"]
+                            </label>
+                            <input type="text" asp-for="GooglePlusCode" class="form-control GooglePlusCode" autocomplete="off" placeholder="@_CommonLocalizer["GooglePlusCode"]">
+                            <span asp-validation-for="GooglePlusCode" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label asp-for="Street" class="form-label">
+                                <i class="link-icon feather-16" data-feather="stop-circle"></i> @_CommonLocalizer["Street"]
+                            </label>
+                            <input type="text" asp-for="Street" class="form-control Street" autocomplete="off" placeholder=" @_CommonLocalizer["Street"]">
+                            <span asp-validation-for="Street" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <label asp-for="Note" class="form-label">
+                                <i class="link-icon feather-16" data-feather="stop-circle"></i> @_CommonLocalizer["Note"]
+                            </label>
+                            <textarea asp-for="Note" class="form-control Note" autocomplete="off" placeholder="@_CommonLocalizer["Note"]"> </textarea>
+                            <span asp-validation-for="Note" class="text-danger"></span>
+                        </div>
+                        <button id="btn-save-location" type="submit" class="btn btn-primary mt-2">@_CommonLocalizer["SaveBtn"]</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="https://maps.googleapis.com/maps/api/js?key=@googleApi&libraries=places"></script>
+    <script src="~/js/Custom/CustomerLocation.js" asp-append-version="true"> </script>
+    <script>
+        window.addEventListener('load', function () {
+            initGeneralMap("customerLocationMap", "FullAddress",@Model.Latitude, @Model.Longitude);
+        });
+
+    </script>
+}

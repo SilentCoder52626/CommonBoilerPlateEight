@@ -1,0 +1,109 @@
+﻿@model CelebrityScheduleIndexAndFilterViewModel
+
+@{
+    ViewBag.ModuleName = _CommonLocalizer["CelebritySchedule"];
+    ViewBag.ModuleIcon = "anchor";
+    var celebrities = ViewBag.Celebrities as List<DropdownDto> ?? new List<DropdownDto>();
+
+}
+
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="row card-title align-middle mb-5">
+                    <div class="col-md-12 align-items-center d-flex mt-1">
+                        <a href="@Url.Action("Create", "CelebritySchedule")" class="btn btn-primary btn-xs btn-icon-text">
+                            <i class="btn-icon-prepend" data-feather="plus"></i>@_CommonLocalizer["Create"]
+                        </a>
+                    </div>
+                    <div class="col-md-12 mt-1">
+                        <form asp-controller="CelebritySchedule" asp-action="Index" method="get">
+                            <div class="card-header">
+
+                                <div class="d-flex justify-content-between align-items-center row py-3 gap-3 gap-md-0">
+                                    <form>
+                                        <div class="row ">
+
+                                            <div class="col-md-2">
+                                                <label class="form-label">@_CommonLocalizer["Celebrity"]</label>
+                                                @Html.DropDownListFor(a => a.Filter.CelebrityId, new SelectList(celebrities, "Id", "Name"), _CommonLocalizer["Select"], new { @class = "form-control", data_val = "false" })
+                                            </div>
+                                            <div class="col-md-2 mt-4">
+
+                                                <button type="submit" id="filter" class="mt-1 search-button btn btn-primary waves-effect waves-light  form-control"> @_CommonLocalizer["Filter"]</button>
+
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+
+                        </form>
+                    </div>
+                </div>
+
+                <hr style="border: 1px dashed #000" />
+
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="bg-primary">
+                            <tr>
+                                <th class="text-white fw-bold"><i class="link-icon feather-16" data-feather="edit"></i>@_CommonLocalizer["Celebrity"]</th>
+                                <th class="text-white fw-bold"><i class="link-icon feather-16" data-feather="user"></i>@_CommonLocalizer["Date"]</th>
+                                <th class="text-white fw-bold"><i class="link-icon feather-16" data-feather="truck"></i>@_CommonLocalizer["Schedule"]</th>
+                                <th class="text-white fw-bold text-center"><i class="link-icon feather-16" data-feather="settings"></i> @_CommonLocalizer["Action"]</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Results.Any())
+                            {
+                                foreach (var item in Model.Results)
+                                {
+                                    <tr>
+                                        <td>@item.Celebrity</td>
+                                        <td>@item.Date.ToString("yyyy-MM-dd")</td>
+                                        <td>@item.FormattedSchedule</td>
+                                        <td class="text-center">
+                                            <a href="@Url.Action("Edit", "CelebritySchedule", new { id = item.Id })" class="text-primary btn-icon-text btn-xs" title="Edit">
+                                                <i class="btn-icon-prepend fa fa-edit"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="5" class="text-center">
+                                        @_CommonLocalizer["NoRecords"]
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Model.Results.Any() && Model.Results.PageCount > 1)
+{
+    <div class="pagination-area">
+        @Html.PagedListPagerBT4(
+                Model.Results,
+                page => Url.Action("Index", "CelebritySchedule",
+                new CelebrityScheduleFilterViewModel
+    {
+        CelebrityId = Model.Filter.CelebrityId,
+        PageNumber = page
+    })!)
+    </div>
+}
+
+
+
+

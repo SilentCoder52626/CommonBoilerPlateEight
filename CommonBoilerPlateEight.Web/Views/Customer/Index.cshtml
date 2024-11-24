@@ -1,0 +1,210 @@
+﻿@model CustomerIndexAndFilterViewModel
+
+@{
+    ViewBag.ModuleName = _CommonLocalizer["Customer"];
+    ViewBag.ModuleIcon = "user";
+    var countries = ViewBag.Countries as List<CountryResponseViewModel> ?? new List<CountryResponseViewModel>();
+    var celebrityTypes = ViewBag.CelebrityTypes as List<CelebrityTypeResponseModel> ?? new List<CelebrityTypeResponseModel>();
+    var genders = EnumExtensions.ToDropdownList<GenderTypeEnum>();
+}
+
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="row card-title align-middle mb-5">
+                    <div class="col-md-12 align-items-center d-flex mt-1">
+                        <a href="@Url.Action("Create", "Customer")" class="btn btn-primary btn-xs btn-icon-text">
+                            <i class="btn-icon-prepend" data-feather="plus"></i>@_CommonLocalizer["Create"]
+                        </a>
+                    </div>
+                    <div class="col-md-12 mt-1">
+                        <form asp-controller="Customer" asp-action="Index" method="get">
+                            <div class="card-header">
+
+                                <div class="d-flex justify-content-between align-items-center row py-3 gap-3 gap-md-0">
+                                    <form>
+                                        <div class="row ">
+
+                                            <div class="col-md-3">
+                                                <label class="form-label">@_CommonLocalizer["Search"]</label>
+                                                <input type="text" placeholder="@_CommonLocalizer["Search"]" class="form-control" asp-for="@Model.Filter.Name">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label">@_CommonLocalizer["InterestedCelebrityTypes"]</label>
+                                                @Html.DropDownListFor(a => a.Filter.CelebrityTypes, new SelectList(celebrityTypes, "Id", "Name"), _CommonLocalizer["Select"], new { @class = "form-control select2Input", multiple = "multiple", data_val = "false" })
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label class="form-label">@_CommonLocalizer["Gender"]</label>
+                                                @Html.DropDownListFor(a => a.Filter.Gender, new SelectList(genders, "Text", "Value"), _CommonLocalizer["Select"], new { @class = "form-control select2Input" })
+                                            </div>
+                                            <div class="col-md-2 mt-4">
+
+                                                <button type="submit" id="filter" class="mt-1 search-button btn btn-primary waves-effect waves-light  form-control"> @_CommonLocalizer["Filter"]</button>
+
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+
+                        </form>
+                    </div>
+                </div>
+
+                <hr style="border: 1px dashed #000" />
+
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="bg-primary">
+                            <tr>
+                                <th class="text-white fw-bold"><i class="link-icon feather-16" data-feather="edit"></i>@_CommonLocalizer["Image"]</th>
+                                <th class="text-white fw-bold"><i class="link-icon feather-16" data-feather="user"></i>@_CommonLocalizer["FullName"]</th>
+                                <th class="text-white fw-bold"><i class="link-icon feather-16" data-feather="truck"></i>@_CommonLocalizer["Mobile"]</th>
+                                <th class="text-white fw-bold"><i class="link-icon feather-16" data-feather="edit"></i>@_CommonLocalizer["Email"]</th>
+                                <th class="text-white fw-bold"><i class="link-icon feather-16" data-feather="edit"></i>@_CommonLocalizer["Type"]</th>
+                                <th class="text-white fw-bold"><i class="link-icon feather-16" data-feather="edit"></i>@_CommonLocalizer["Status"]</th>
+                                <th class="text-white fw-bold"><i class="link-icon feather-16" data-feather="edit"></i>@_CommonLocalizer["IsActive"]</th>
+                                <th class="text-white fw-bold text-center"><i class="link-icon feather-16" data-feather="settings"></i> @_CommonLocalizer["Action"]</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Results)
+                            {
+                                <tr>
+
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img class="img-lg rounded-circle" src="@(!string.IsNullOrEmpty(item.ProfileImageUrl)? item.ProfileImageUrl :"/images/others/placeholder.jpg")" alt="" id="profileImage">
+                                        </div>
+                                    </td>
+                                    <td>@item.FullName</td>
+                                    <td>(@item.CountryDialCode) @item.MobileNumber</td>
+                                    <td>@item.Email</td>
+                                    <td>@item.CelebrityTypes</td>
+                                    <td>@item.Status</td>
+                                    <td class="text-center">
+                                        @if (!item.IsActive)
+                                        {
+                                            <span class="text-danger"> @_CommonLocalizer["InActive"]</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-success"> @_CommonLocalizer["Active"]</span>
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="@Url.Action("ViewDetails", "Customer", new { id = item.Id })" class="text-primary btn-icon-text btn-xs" target="_blank" title="View">
+                                            <i class="btn-icon-prepend fa fa-eye"></i>
+                                        </a> |
+                                        <a href="@Url.Action("Edit", "Customer", new { id = item.Id })" class="text-primary btn-icon-text btn-xs" title="Update">
+                                            <i class="btn-icon-prepend fa fa-edit"></i>
+                                        </a> |
+                                        @if (item.IsActive)
+                                        {
+                                            <a class="card-link deactivate text-danger" data-id="@item.Id" data-bs-toggle="tooltip" data-bs-placement="top" title="Deactivate"><i class="fas fa-check-circle"></i> </a>
+                                        }
+                                        else
+                                        {
+                                            <a class="card-link activate  text-success" data-id="@item.Id" data-bs-toggle="tooltip" data-bs-placement="top" title="Activate"><i class="fas fa-times-circle"></i></a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Model.Results.Any() && Model.Results.PageCount > 1)
+{
+    <div class="pagination-area">
+        @Html.PagedListPagerBT4(
+                Model.Results,
+                page => Url.Action("Index", "Customer",
+                new CelebrityFilterViewModel
+    {
+        Status = Model.Filter.Status,
+        Name = Model.Filter.Name,
+        CelebrityTypes = Model.Filter.CelebrityTypes,
+        Gender = Model.Filter.Gender,
+        PageNumber = page
+    })!
+                )
+    </div>
+}
+
+
+@section Scripts{
+    <script>
+        $(document).on("click", ".deactivate", function () {
+            const title = "Do you really want to deactivate this customer?";
+            const id = $(this).attr("data-id");
+            ShowDialog("Deactivate", title, "warning").then((result) => {
+                if (result.isConfirmed) {
+                    blockwindow();
+                    $.ajax({
+                        type: "Patch",
+                        url: "/Customer/Deactivate?id=" + id,
+                        success: function (response) {
+                            if (response.Status == "Success") {
+                                SuccessToast(response.Message);
+                                window.location.reload();
+                            }
+                            else {
+                                InfoToast(response.Errors.join("\n"))
+                            }
+                            unblockwindow()
+                        },
+                        error: function (response) {
+                            unblockwindow();
+                            handleAjaxError(response)
+                        },
+                    });
+                } else {
+                }
+            });
+            return false;
+        })
+
+
+        $(document).on("click", ".activate", function () {
+            const title = "Do you really want to activate this customer?";
+            const id = $(this).attr("data-id");
+            ShowDialog("Activate", title, "warning").then((result) => {
+                if (result.isConfirmed) {
+                    blockwindow();
+                    $.ajax({
+                        type: "Patch",
+                        url: "/Customer/Activate?id=" + id,
+                        success: function (response) {
+                            if (response.Status == "Success") {
+                                SuccessToast(response.Message);
+                                window.location.reload();
+                            }
+                            else {
+                                InfoToast(response.Errors.join("\n"))
+                            }
+                            unblockwindow()
+
+                        },
+                        error: function (response) {
+                            unblockwindow();
+                            handleAjaxError(response)
+                        },
+                    });
+                } else {
+                }
+            });
+            return false;
+        })
+    </script>
+}
+
+
+

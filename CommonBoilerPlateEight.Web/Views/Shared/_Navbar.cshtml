@@ -1,0 +1,66 @@
+﻿<nav class="navbar">
+    <a href="#" class="sidebar-toggler">
+        <i data-feather="menu"></i>
+    </a>
+    <div class="navbar-content">
+        <ul class="navbar-nav">
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="flag-icon flag-icon-@_CommonLocalizer["LanguageFlag"] mt-1" title="@_CommonLocalizer["Language"]"></i> <span class="ms-1 me-1 d-none d-md-inline-block">@_CommonLocalizer["Language"]</span>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="languageDropdown">
+                    <a href="@Url.Action("SetCulture", "Base", new { culture = "en-US"})" class="dropdown-item py-2"><i class="flag-icon flag-icon-us" title="us" id="us"></i> <span class="ms-1"> English </span></a>
+                    
+                </div>
+            </li>
+
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="appsDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i data-feather="settings"></i>
+                </a>
+                <div class="dropdown-menu p-0" aria-labelledby="appsDropdown">
+
+                    <ul class="list-unstyled p-1">
+     
+                        <li class="dropdown-item py-2" asp-authorize="Setting-Email">
+                            <a asp-controller="Setting" asp-action="EmailSetup" class="text-body ms-0">
+                                <i class="me-2 icon-md" data-feather="settings"></i>
+                                <span>@_CommonLocalizer["EmailSetting"]</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img class="wd-30 ht-30 rounded-circle" src="/images/others/placeholder.jpg" alt="profile"> <span class="text-primary">@User.Identity.Name</span>
+                </a>
+                <div class="dropdown-menu p-0" aria-labelledby="profileDropdown">
+
+                    <ul class="list-unstyled p-1">
+                        <li class="dropdown-item py-2">
+                            <a href="../../pages/general/profile.html" class="text-body ms-0">
+                                <i class="me-2 icon-md" data-feather="user"></i>
+                                <span>@_CommonLocalizer["Profile"]</span>
+                            </a>
+                        </li>
+                        <li class="dropdown-item py-2">
+                            <a href="#" class="text-body ms-0">
+                                <i class="me-2 icon-md" data-feather="key"></i>
+                                <span>@_CommonLocalizer["ChangePassword"]</span>
+                            </a>
+                        </li>
+                        <li class="dropdown-item py-2">
+                            <a asp-controller="Account" asp-action="Logout" class="text-body ms-0">
+                                <i class="me-2 icon-md" data-feather="log-out"></i>
+                                <span>@_CommonLocalizer["LogOut"]</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
