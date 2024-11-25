@@ -399,3 +399,5 @@ FodyWeavers.xsd
 
 StarBooker.Web/wwwroot/Uploads
 /StarBooker.Domain/Entity/Booking/CelebrityAdvertisement.cs
+/CommonBoilerPlateEight.Web/appsettings.json
+/CommonBoilerPlateEight.Api/appsettings.json
