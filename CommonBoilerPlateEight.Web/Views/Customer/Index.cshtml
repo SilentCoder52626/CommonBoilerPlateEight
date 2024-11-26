@@ -4,7 +4,6 @@
     ViewBag.ModuleName = _CommonLocalizer["Customer"];
     ViewBag.ModuleIcon = "user";
     var countries = ViewBag.Countries as List<CountryResponseViewModel> ?? new List<CountryResponseViewModel>();
-    var celebrityTypes = ViewBag.CelebrityTypes as List<CelebrityTypeResponseModel> ?? new List<CelebrityTypeResponseModel>();
     var genders = EnumExtensions.ToDropdownList<GenderTypeEnum>();
 }
 
@@ -30,11 +29,7 @@
                                                 <label class="form-label">@_CommonLocalizer["Search"]</label>
                                                 <input type="text" placeholder="@_CommonLocalizer["Search"]" class="form-control" asp-for="@Model.Filter.Name">
                                             </div>
-                                            <div class="col-md-3">
-                                                <label class="form-label">@_CommonLocalizer["InterestedCelebrityTypes"]</label>
-                                                @Html.DropDownListFor(a => a.Filter.CelebrityTypes, new SelectList(celebrityTypes, "Id", "Name"), _CommonLocalizer["Select"], new { @class = "form-control select2Input", multiple = "multiple", data_val = "false" })
-                                            </div>
-
+                                           
                                             <div class="col-md-3">
                                                 <label class="form-label">@_CommonLocalizer["Gender"]</label>
                                                 @Html.DropDownListFor(a => a.Filter.Gender, new SelectList(genders, "Text", "Value"), _CommonLocalizer["Select"], new { @class = "form-control select2Input" })
@@ -64,7 +59,6 @@
                                 <th class="text-white fw-bold"><i class="link-icon feather-16" data-feather="user"></i>@_CommonLocalizer["FullName"]</th>
                                 <th class="text-white fw-bold"><i class="link-icon feather-16" data-feather="truck"></i>@_CommonLocalizer["Mobile"]</th>
                                 <th class="text-white fw-bold"><i class="link-icon feather-16" data-feather="edit"></i>@_CommonLocalizer["Email"]</th>
-                                <th class="text-white fw-bold"><i class="link-icon feather-16" data-feather="edit"></i>@_CommonLocalizer["Type"]</th>
                                 <th class="text-white fw-bold"><i class="link-icon feather-16" data-feather="edit"></i>@_CommonLocalizer["Status"]</th>
                                 <th class="text-white fw-bold"><i class="link-icon feather-16" data-feather="edit"></i>@_CommonLocalizer["IsActive"]</th>
                                 <th class="text-white fw-bold text-center"><i class="link-icon feather-16" data-feather="settings"></i> @_CommonLocalizer["Action"]</th>
@@ -83,7 +77,6 @@
                                     <td>@item.FullName</td>
                                     <td>(@item.CountryDialCode) @item.MobileNumber</td>
                                     <td>@item.Email</td>
-                                    <td>@item.CelebrityTypes</td>
                                     <td>@item.Status</td>
                                     <td class="text-center">
                                         @if (!item.IsActive)
@@ -131,7 +124,6 @@
     {
         Status = Model.Filter.Status,
         Name = Model.Filter.Name,
-        CelebrityTypes = Model.Filter.CelebrityTypes,
         Gender = Model.Filter.Gender,
         PageNumber = page
     })!

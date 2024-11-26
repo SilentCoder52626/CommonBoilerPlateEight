@@ -83,7 +83,6 @@ namespace CommonBoilerPlateEight.Web.Controllers
                     Email = celebrityResponse.Email,
                     Gender = celebrityResponse.Gender,
                     ProfileImage = celebrityResponse.ProfileImage,
-                    CelebrityTypeIds = celebrityResponse.CelebrityTypeIds ,
                     Description = celebrityResponse.Description
                 };
                 return View(editViewModel);
@@ -174,7 +173,6 @@ namespace CommonBoilerPlateEight.Web.Controllers
 
         private async Task PrepareViewBags()
         {
-            ViewBag.CelebrityTypes = await _celebrityTypeService.GetAllAsync().ConfigureAwait(false);
             ViewBag.Countries = await _countryService.GetAllAsync().ConfigureAwait(false);
         }
     }

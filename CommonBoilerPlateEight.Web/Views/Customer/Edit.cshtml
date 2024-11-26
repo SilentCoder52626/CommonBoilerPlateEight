@@ -45,13 +45,7 @@
                                 <span asp-validation-for="Gender" class="text-danger"></span>
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <label class="col-sm-3 col-form-label">@_CommonLocalizer["InterestedCelebrityTypes"]</label>
-                            <div class="col-sm-9">
-                                @Html.DropDownListFor(a => a.CelebrityTypeIds, new SelectList(celebrityTypes, "Id", "Name"), _CommonLocalizer["Select"], new { @class = "form-control select2Input", multiple = "multiple" })
-                                <span asp-validation-for="CelebrityTypeIds" class="text-danger"></span>
-                            </div>
-                        </div>
+                       
                         <div class="row mb-3">
                             <label for="exampleInputMobile" class="col-sm-3 col-form-label">@_CommonLocalizer["Mobile"]</label>
                             <div class="col-sm-3">
@@ -96,10 +90,9 @@
     <script>
         $(document).ready(function () {
             // Serialize the CelebrityTypeIds from Razor to JavaScript
-            var selectedValues = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.CelebrityTypeIds));
 
-            // Set the values for the Select2 dropdown and trigger the change event
-            $('#CelebrityTypeIds').val(selectedValues).trigger('change');
+            // // Set the values for the Select2 dropdown and trigger the change event
+            // $('#CelebrityTypeIds').val(selectedValues).trigger('change');
         });
     </script>
 }

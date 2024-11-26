@@ -14,7 +14,6 @@ namespace CommonBoilerPlateEight.Domain.Models
 
         public string CountryDialCode { get; set; }
         public string MobileNumber { get; set; }    
-        public string CelebrityTypes { get; set; }
         public string ProfileImageUrl { get; set; }
         public string Gender { get; set; }
         public string? Description { get; set; }

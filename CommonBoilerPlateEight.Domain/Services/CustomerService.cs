@@ -32,7 +32,7 @@ namespace CommonBoilerPlateEight.Domain.Services
         public async Task<int> Create(CustomerCreateViewModel model)
         {
             using var tx = TransactionScopeHelper.GetInstance();
-            if (!model.CelebrityTypeIds.Any()) throw new CustomException("No Interest Selected");
+            
             var user = await _db.Users.FirstOrDefaultAsync(a => a.Id == AppHttpContext.GetAdminCurrentUserId()).ConfigureAwait(false) ?? throw new CustomException("User not found");
             var country = await _db.Countries.FirstOrDefaultAsync(a => a.Id == model.CountryId).ConfigureAwait(false) ?? throw new CustomException("Country Not Found");
             await ValidateCustomer(model.Email, model.CountryId, model.MobileNumber);
@@ -57,11 +57,7 @@ namespace CommonBoilerPlateEight.Domain.Services
                 var imageFilePath = await _fileUploaderService.SaveFileAsync(model.ProfileImageFile, FileDirectoryConstants.Customer).ConfigureAwait(false);
                 customer.SetProfilePicture(imageFilePath);
             }
-            foreach (var celebrityTypeId in model.CelebrityTypeIds)
-            {
-                var celebrityType = await _db.CelebrityTypes.FirstOrDefaultAsync(a => a.Id == celebrityTypeId).ConfigureAwait(false) ?? throw new CustomException("Celebrity Type not found.");
-                customer.AddCelebrityTypes(celebrityType);
-            }
+            
             await _db.Customers.AddAsync(customer).ConfigureAwait(false);
             await _db.SaveChangesAsync().ConfigureAwait(false);
             tx.Complete();
@@ -71,8 +67,8 @@ namespace CommonBoilerPlateEight.Domain.Services
         public async Task Edit(CustomerEditViewModel model)
         {
             using var tx = TransactionScopeHelper.GetInstance();
-            if (!model.CelebrityTypeIds.Any()) throw new CustomException("No Interest Selected");
-            var customer = await _db.Customers.Include(a => a.CustomerToCelebrityTypes).FirstOrDefaultAsync(a => a.Id == model.Id).ConfigureAwait(false) ?? throw new CustomException("Customer not found");
+            
+            var customer = await _db.Customers.FirstOrDefaultAsync(a => a.Id == model.Id).ConfigureAwait(false) ?? throw new CustomException("Customer not found");
             await ValidateCustomer(model.Email, model.CountryId, model.MobileNumber, customer.Id).ConfigureAwait(false);
             var country = await _db.Countries.FirstOrDefaultAsync(a => a.Id == model.CountryId).ConfigureAwait(false) ?? throw new CustomException("Country Not Found");
             var gender = model.Gender.ToEnum<GenderTypeEnum>();
@@ -91,12 +87,7 @@ namespace CommonBoilerPlateEight.Domain.Services
                 var imageFileName = await _fileUploaderService.SaveFileAsync(model.ProfileImageFile, FileDirectoryConstants.Celebrity);
                 customer.ProfilePictureURL = imageFileName;
             }
-            _db.CustomerToCelebrityTypes.RemoveRange(customer.CustomerToCelebrityTypes.ToList());
-            foreach (var celebrityTypeId in model.CelebrityTypeIds)
-            {
-                var celebrityType = await _db.CelebrityTypes.FirstOrDefaultAsync(a => a.Id == celebrityTypeId).ConfigureAwait(false) ?? throw new CustomException("Celebrity Type not found.");
-                customer.AddCelebrityTypes(celebrityType);
-            }
+           
             _db.Customers.Update(customer);
             await _db.SaveChangesAsync().ConfigureAwait(false);
             tx.Complete();
@@ -113,18 +104,13 @@ namespace CommonBoilerPlateEight.Domain.Services
 
         public async Task<IPagedList<CustomerBasicDetailResponseViewModel>> GetAllAsPagedList(CustomerFilterViewModel model)
         {
-            var customerQueryable = _db.Customers.Include(a => a.CustomerToCelebrityTypes).ThenInclude(a => a.CelebrityType).Include(a => a.Country).AsQueryable();
+            var customerQueryable = _db.Customers.Include(a => a.Country).AsQueryable();
             if (!string.IsNullOrEmpty(model.Name))
             {
                 var search = model.Name.ToLower().Trim();
                 customerQueryable = customerQueryable.Where(a => !string.IsNullOrEmpty(a.FullName) && a.FullName.ToLower().Trim().Contains(search) || a.Email.ToLower().Trim().Equals(search) || (!string.IsNullOrEmpty(a.MobileNumber) && a.MobileNumber.ToLower().Trim().Equals(search)));
             }
-            if (model.CelebrityTypes.Any())
-            {
-                var celebrityTypeIds = new HashSet<int>(model.CelebrityTypes);
-                customerQueryable = customerQueryable
-                    .Where(a => a.CustomerToCelebrityTypes.Any(x => celebrityTypeIds.Contains(x.CelebrityTypeId)));
-            }
+            
             if (!string.IsNullOrEmpty(model.Status))
             {
                 var status = model.Status.ToEnum<StatusTypeEnum>();
@@ -147,7 +133,6 @@ namespace CommonBoilerPlateEight.Domain.Services
                 ProfileImageUrl = _baseImageUrl + a.ProfilePictureURL,
                 Email = a.Email,
                 IsActive = a.IsActive,
-                CelebrityTypes = a.CustomerToCelebrityTypes.Any() ? string.Join(",", a.CustomerToCelebrityTypes.Select(b => b.CelebrityType).Select(a => a.Name).ToList()) : string.Empty,
 
             }).ToPagedListAsync(model.PageNumber, model.pageSize).ConfigureAwait(false);
             return customers;
@@ -155,7 +140,7 @@ namespace CommonBoilerPlateEight.Domain.Services
 
         public async Task<CustomerResponseViewModel> GetById(int id)
         {
-            var customer = await _db.Customers.Include(a => a.Country).Include(a => a.CustomerToCelebrityTypes).ThenInclude(a => a.CelebrityType)
+            var customer = await _db.Customers.Include(a => a.Country)
                  .Include(a => a.CreatedByUser)
                  .Include(a => a.ApprovedByUser)
                  .Include(a => a.RejectedByUser)
@@ -169,8 +154,6 @@ namespace CommonBoilerPlateEight.Domain.Services
                 CountryDialCode = customer.Country != null ? customer.Country.DialCode : string.Empty,
                 Email = customer.Email,
                 ProfileImage = !string.IsNullOrEmpty(customer.ProfilePictureURL) ? _baseImageUrl + customer.ProfilePictureURL : string.Empty,
-                CelebrityTypeIds = customer.CustomerToCelebrityTypes.Select(a => a.CelebrityTypeId).ToList(),
-                CelebrityTypes = string.Join(",", customer.CustomerToCelebrityTypes.Select(a => a.CelebrityType).Select(a => a.Name).ToList()),
                 Gender = customer.Gender.HasValue ? customer.Gender.Value.ToString() : string.Empty,
                 Description = customer.Description,
                 Status = customer.Status.ToString(),
@@ -189,7 +172,7 @@ namespace CommonBoilerPlateEight.Domain.Services
         public async Task EditBasicDetails(CustomerEditBasicDetailViewModel model)
         {
             using var tx = TransactionScopeHelper.GetInstance();
-            var customer = await _db.Customers.Include(a => a.CustomerToCelebrityTypes).FirstOrDefaultAsync(a => a.Id == model.Id).ConfigureAwait(false) ?? throw new CustomException("Customer not found");
+            var customer = await _db.Customers.FirstOrDefaultAsync(a => a.Id == model.Id).ConfigureAwait(false) ?? throw new CustomException("Customer not found");
             await ValidateCustomer(model.Email, model.CountryId, model.MobileNumber, customer.Id).ConfigureAwait(false);
             var country = await _db.Countries.FirstOrDefaultAsync(a => a.Id == model.CountryId).ConfigureAwait(false) ?? throw new CustomException("Country Not Found");
             var gender = model.Gender.ToEnum<GenderTypeEnum>();
@@ -211,41 +194,6 @@ namespace CommonBoilerPlateEight.Domain.Services
             _db.Customers.Update(customer);
             await _db.SaveChangesAsync().ConfigureAwait(false);
             tx.Complete();
-        }
-
-        public async Task<bool> HasInterestAdded(int customerId)
-        {
-            var customer = await _db.Customers.Include(a => a.CustomerToCelebrityTypes).FirstOrDefaultAsync(a => a.Id == customerId).ConfigureAwait(false) ?? throw new CustomException("Customer not found");
-            return customer.CustomerToCelebrityTypes.Any();
-        }
-
-        public async Task AddEditInterests(CustomerEditTypesViewModel model)
-        {
-            var customer = await _db.Customers.Include(a => a.CustomerToCelebrityTypes).FirstOrDefaultAsync(a => a.Id == model.CustomerId).ConfigureAwait(false) ?? throw new CustomException("Customer not found");
-            _db.CustomerToCelebrityTypes.RemoveRange(customer.CustomerToCelebrityTypes.ToList());
-            foreach (var celebrityTypeId in model.CelebrityTyesIds)
-            {
-                var celebrityType = await _db.CelebrityTypes.FirstOrDefaultAsync(a => a.Id == celebrityTypeId).ConfigureAwait(false) ?? throw new CustomException("Celebrity Type not found.");
-                customer.AddCelebrityTypes(celebrityType);
-            }
-            _db.Customers.Update(customer);
-            await _db.SaveChangesAsync().ConfigureAwait(false);
-        }
-
-        public async Task ToogleConnectivity(int id)
-        {
-            var customer = await _db.Customers.FirstOrDefaultAsync(a => a.Id == id).ConfigureAwait(false) ?? throw new CustomException("Customer not found");
-
-            if (customer.IsOnline)
-            {
-                customer.IsOnline = false;
-            }
-            else
-            {
-                customer.IsOnline = true;
-            }
-            _db.Customers.Update(customer);
-            await _db.SaveChangesAsync().ConfigureAwait(false);
         }
 
 

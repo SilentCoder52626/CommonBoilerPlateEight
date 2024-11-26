@@ -14,8 +14,6 @@ namespace CommonBoilerPlateEight.Domain.Models
         public int CountryId { get; set; }
         public string CountryDialCode { get; set; }
         public string MobileNumber { get; set; }
-        public List<int> CelebrityTypeIds { get; set; } = new List<int>();
-        public string CelebrityTypes { get; set; }
         public string ProfileImage { get; set; }
         public string Gender { get; set; }
         public string? Description { get; set; }

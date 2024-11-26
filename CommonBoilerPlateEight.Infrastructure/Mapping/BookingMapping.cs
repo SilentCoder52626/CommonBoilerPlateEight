@@ -30,10 +30,7 @@ namespace CommonBoilerPlateEight.Infrastructure.Mapping
                 .HasForeignKey(ca => ca.BookingId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            builder.HasOne(e => e.Customer)
-              .WithMany(b => b.Bookings)
-              .HasForeignKey(b => b.CustomerId)
-              .OnDelete(DeleteBehavior.NoAction);
+            
 
             builder.Property(b => b.IsCreatedByAdmin)
                               .IsRequired();

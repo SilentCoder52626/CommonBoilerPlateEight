@@ -46,13 +46,7 @@
                                 <span asp-validation-for="Gender" class="text-danger"></span>
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <label class="col-sm-3 col-form-label">@_CommonLocalizer["InterestedCelebrityTypes"]</label>
-                            <div class="col-sm-9">
-                                @Html.DropDownListFor(a => a.CelebrityTypeIds, new SelectList(celebrityTypes, "Id", "Name"), _CommonLocalizer["Select"], new { @class = "form-control select2Input", multiple = "multiple" })
-                                <span asp-validation-for="CelebrityTypeIds" class="text-danger"></span>
-                            </div>
-                        </div>
+                       
                         <div class="row mb-3">
                             <label for="exampleInputMobile" class="col-sm-3 col-form-label">@_CommonLocalizer["Mobile"]</label>
                             <div class="col-sm-3">

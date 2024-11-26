@@ -24,11 +24,7 @@ namespace CommonBoilerPlateEight.Infrastructure.Mapping
                s => (DeliveryTypeEnum)Enum.Parse(typeof(DeliveryTypeEnum), s));
 
             // Relationships
-            builder.HasOne(ci => ci.Customer)
-                .WithMany(c => c.CartItems)
-                .HasForeignKey(ci => ci.CustomerId)
-                .OnDelete(DeleteBehavior.NoAction);
-
+           
             builder.HasOne(b => b.Celebrity)
                   .WithMany(c => c.CartItems)
                   .HasForeignKey(b => b.CelebrityId)

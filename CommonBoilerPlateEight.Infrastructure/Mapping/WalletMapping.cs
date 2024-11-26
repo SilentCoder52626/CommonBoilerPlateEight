@@ -17,10 +17,6 @@ namespace CommonBoilerPlateEight.Infrastructure.Mapping
             builder.Property(w => w.CreatedDate)
                    .IsRequired();
 
-            builder.HasOne(w => w.Customer)
-                   .WithMany(c => c.Wallets)
-                   .HasForeignKey(w => w.CustomerId)
-                   .OnDelete(DeleteBehavior.NoAction);
 
         }
     }

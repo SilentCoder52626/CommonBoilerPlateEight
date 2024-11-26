@@ -28,8 +28,6 @@ namespace CommonBoilerPlateEight.Domain.Models
         [Required(ErrorMessage = "Confirm Password is required.")]
         [Compare("Password", ErrorMessage = "Password and Confirm Password must match.")]
         public string ConfirmPassword { get; set; }
-        [Required(ErrorMessage = "Interest is required")]
-        public List<int> CelebrityTypeIds { get; set; }
         [Required(ErrorMessage = "Gender is required")]
         public string Gender { get; set; }
         public string? Description { get; set; }

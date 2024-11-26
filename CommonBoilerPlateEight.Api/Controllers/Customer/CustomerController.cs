@@ -56,31 +56,6 @@ namespace CommonBoilerPlateEight.Api.Controllers.Customer
 
         }
 
-        [HttpPost("Add-Interest")]
-        [ProducesResponseType(typeof(ApiResponseModel), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(ApiResponseModel), (int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> AddInterest([FromBody] List<int> interests)
-        {
-            var customerId = AppHttpContext.ValidateAndGetCustomerId();
-            await _customerService.AddEditInterests(new CustomerEditTypesViewModel
-            {
-                CustomerId = customerId,
-                CelebrityTyesIds = interests
-            });
-            return this.ApiSuccessResponse(HttpStatusCode.OK, "Interest Added Successfully.");
-
-        }
-
-        [ProducesResponseType(typeof(ApiResponseModel), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(ApiResponseModel), (int)HttpStatusCode.BadRequest)]
-        [HttpPatch("toggle-connectivity")]
-        public async Task<IActionResult> ToggleConnectivity()
-        {
-            var customerId = AppHttpContext.ValidateAndGetCustomerId();
-            await _customerService.ToogleConnectivity(customerId);
-            return this.ApiSuccessResponse(HttpStatusCode.OK, "Successfull.");
-        }
-
         [ProducesResponseType(typeof(ApiResponseModel), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ApiResponseModel), (int)HttpStatusCode.BadRequest)]
         [HttpGet("get-connectivity-status")]

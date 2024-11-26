@@ -28,16 +28,7 @@ namespace CommonBoilerPlateEight.Domain.Entity
         public ApplicationUser? CreatedByUser { get; set; }
         public ApplicationUser? ApprovedByUser { get; set; }
         public ApplicationUser? RejectedByUser { get; set; }
-        public ICollection<CustomerToCelebrityType> CustomerToCelebrityTypes { get; set; } = new List<CustomerToCelebrityType>();
-        public ICollection<CelebrityAdvertisement> CelebrityAdvertisements { get; set; } = new List<CelebrityAdvertisement>();
-        public ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
-        public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
-        public ICollection<Wallet> Wallets { get; set; } = new List<Wallet>();
 
-        public void AddCelebrityTypes(CelebrityType type)
-        {
-            CustomerToCelebrityTypes.Add(new CustomerToCelebrityType(this, type));
-        }
         public void SetProfilePicture(string imageUrl)
         {
             ProfilePictureURL = imageUrl;

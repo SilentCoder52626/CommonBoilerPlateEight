@@ -23,8 +23,6 @@ namespace CommonBoilerPlateEight.Domain.Models
         public string MobileNumber { get; set; }
         public IFormFile? ProfileImageFile { get; set; }
         public string? ProfileImage { get; set; }
-        [Required(ErrorMessage = "Interests is required.")]
-        public List<int> CelebrityTypeIds { get; set; }
         [Required(ErrorMessage = "Gender is required")]
         public string Gender { get; set; }
         public string? Description { get; set; }

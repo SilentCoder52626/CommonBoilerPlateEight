@@ -50,11 +50,6 @@ namespace CommonBoilerPlateEight.Infrastructure.Mapping
                    .HasForeignKey(b => b.CelebrityId)
                    .OnDelete(DeleteBehavior.NoAction);
 
-            builder.HasOne(e => e.Customer)
-               .WithMany(b => b.CelebrityAdvertisements)
-               .HasForeignKey(b => b.CustomerId)
-               .OnDelete(DeleteBehavior.NoAction);
-
             builder.HasMany(b => b.CelebrityReviews)
                    .WithOne(r => r.CelebrityAdvertisement)
                    .HasForeignKey(r => r.AdId)

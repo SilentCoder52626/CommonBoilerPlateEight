@@ -43,10 +43,7 @@ namespace CommonBoilerPlateEight.Infrastructure.Mapping
             builder.HasOne(a => a.Country).WithMany().HasForeignKey(a => a.CountryId).OnDelete(DeleteBehavior.NoAction);
             builder.HasOne(a => a.ApprovedByUser).WithMany().HasForeignKey(a => a.ApprovedById).OnDelete(DeleteBehavior.NoAction);
             builder.HasOne(a => a.RejectedByUser).WithMany().HasForeignKey(a => a.RejectedById).OnDelete(DeleteBehavior.NoAction);
-            builder.HasMany(a => a.CustomerToCelebrityTypes).WithOne(a => a.Customer).HasForeignKey(a => a.CustomerId).OnDelete(DeleteBehavior.NoAction);
-            builder.HasMany(a => a.CartItems).WithOne(a => a.Customer).HasForeignKey(a => a.CustomerId).OnDelete(DeleteBehavior.NoAction);
-            builder.HasMany(c => c.Bookings).WithOne(e => e.Customer).HasForeignKey(e => e.CustomerId).OnDelete(DeleteBehavior.NoAction);
-            builder.HasMany(c => c.Wallets).WithOne(e => e.Customer).HasForeignKey(e => e.CustomerId).OnDelete(DeleteBehavior.NoAction);
+            
 
         }
     }
