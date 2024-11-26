@@ -10,15 +10,12 @@ namespace CommonBoilerPlateEight.Web.Controllers
     public class CustomerController : Controller
     {
         private readonly ICountryService _countryService;
-        private readonly ICelebrityTypeService _celebrityTypeService;
         private readonly ICustomerService _customerService;
 
         public CustomerController(ICountryService countryService,
-            ICelebrityTypeService celebrityTypeService,
             ICustomerService customerService
             )
         {
-            _celebrityTypeService = celebrityTypeService;
             _countryService = countryService;
             _customerService = customerService;
         }

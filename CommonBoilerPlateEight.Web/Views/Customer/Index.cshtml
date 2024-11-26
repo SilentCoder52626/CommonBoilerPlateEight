@@ -119,15 +119,7 @@
     <div class="pagination-area">
         @Html.PagedListPagerBT4(
                 Model.Results,
-                page => Url.Action("Index", "Customer",
-                new CelebrityFilterViewModel
-    {
-        Status = Model.Filter.Status,
-        Name = Model.Filter.Name,
-        Gender = Model.Filter.Gender,
-        PageNumber = page
-    })!
-                )
+                page => Url.Action("Index", "Customer")!)
     </div>
 }
 

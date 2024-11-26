@@ -15,7 +15,6 @@ namespace CommonBoilerPlateEight.Domain.Entity
             Celebrity = celebrity;
             Platform = platform;
             Url = url;
-            Icon = SocialLinkIconMapper.GetIconPath(platform);
         }
 
         public void Update(string url)

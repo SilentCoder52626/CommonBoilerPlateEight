@@ -3,7 +3,6 @@
     ViewBag.ModuleName = _CommonLocalizer["Customer"];
     ViewBag.ModuleIcon = "user";
     var countries = ViewBag.Countries as List<CountryResponseViewModel> ?? new List<CountryResponseViewModel>();
-    var celebrityTypes = ViewBag.CelebrityTypes as List<CelebrityTypeResponseModel> ?? new List<CelebrityTypeResponseModel>();
     var genders = EnumExtensions.ToDropdownList<GenderTypeEnum>();
 }
 

@@ -40,10 +40,7 @@ namespace CommonBoilerPlateEight.Infrastructure.Configurations
             //Register services here
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IRoleService, RoleService>();
-            services.AddScoped<ICelebrityTypeService, CelebrityTypeService>();
-            services.AddScoped<ICelebrityAuthService, CelebrityAuthService>();
             services.AddScoped<ICountryService, CountryService>();
-            services.AddScoped<ICelebrityService, CelebrityService>();
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IFileUploaderService, FileUploaderService>();
@@ -52,14 +49,7 @@ namespace CommonBoilerPlateEight.Infrastructure.Configurations
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<ICustomerAuthService, CustomerAuthService>();
             services.AddScoped<ICustomerService, CustomerService>();
-            services.AddScoped<IQuestionSettingService, QuestionSettingService>();
-            services.AddScoped<ICelebrityScheduleService, CelebrityScheduleService>();
             services.AddScoped<ICompanyTypeService, CompanyTypeService>();
-            services.AddScoped<ICelebrityLocationService, CelebrityLocationService>();
-            services.AddScoped<IBookingService, BookingService>();
-            services.AddScoped<IReviewService, ReviewService>();
-            services.AddScoped<ICartItemService, CartItemService>();
-            services.AddScoped<IWalletService, WalletService>();
 
         }
     }
