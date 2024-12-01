@@ -8,7 +8,6 @@ namespace CommonBoilerPlateEight.Domain.Constants
 {
     public  class FileDirectoryConstants
     {
-        public const string Celebrity = "Celebrity";
         public const string Customer = "Customer";
     }
 }

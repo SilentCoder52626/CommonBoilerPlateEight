@@ -283,7 +283,7 @@ function previewImage(event) {
     const file = event.target.files[0];
     const allowedTypes = ["image/jpeg", "image/png"];
     const imageContainer = event.target.getAttribute('data-image-container');
-    const imageElm = document.getElementById(imageContainer)
+    const imageElm = document.getElementById(imageContainer);
     if (file && allowedTypes.includes(file.type)) {
         const reader = new FileReader();
         reader.onload = function (e) {

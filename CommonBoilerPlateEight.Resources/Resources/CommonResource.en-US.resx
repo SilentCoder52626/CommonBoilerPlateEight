@@ -144,9 +144,6 @@
   <data name="Comment" xml:space="preserve">
     <value>Comment</value>
   </data>
-  <data name="Approve" xml:space="preserve">
-    <value>Approve</value>
-  </data>
   <data name="Celebrity" xml:space="preserve">
     <value>Celebrity</value>
   </data>
@@ -247,7 +244,7 @@
     <value>Password</value>
   </data>
   <data name="ConfirmPassword" xml:space="preserve">
-    <value>ConfirmPassword</value>
+    <value>Confirm Password</value>
   </data>
   <data name="Description" xml:space="preserve">
     <value>Description</value>
@@ -437,9 +434,6 @@
   </data>
   <data name="OldPassword" xml:space="preserve">
     <value>Old Password</value>
-  </data>
-  <data name="ChangePassword" xml:space="preserve">
-    <value>Change Password</value>
   </data>
   <data name="ResetPassword" xml:space="preserve">
     <value>Reset Password</value>

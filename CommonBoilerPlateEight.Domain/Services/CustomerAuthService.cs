@@ -114,7 +114,7 @@ namespace CommonBoilerPlateEight.Domain.Services
 
             if (model.ProfileImageFile != null)
             {
-                var imageFilePath = await _fileUploaderService.SaveFileAsync(model.ProfileImageFile, FileDirectoryConstants.Celebrity).ConfigureAwait(false);
+                var imageFilePath = await _fileUploaderService.SaveFileAsync(model.ProfileImageFile, FileDirectoryConstants.Customer).ConfigureAwait(false);
                 customer.ProfilePictureURL = imageFilePath;
             }
             await _db.Customers.AddAsync(customer).ConfigureAwait(false);

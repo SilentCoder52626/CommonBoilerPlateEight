@@ -84,7 +84,7 @@ namespace CommonBoilerPlateEight.Domain.Services
                 {
                     _fileUploaderService.RemoveFile(customer.ProfilePictureURL);
                 }
-                var imageFileName = await _fileUploaderService.SaveFileAsync(model.ProfileImageFile, FileDirectoryConstants.Celebrity);
+                var imageFileName = await _fileUploaderService.SaveFileAsync(model.ProfileImageFile, FileDirectoryConstants.Customer);
                 customer.ProfilePictureURL = imageFileName;
             }
            
@@ -188,7 +188,7 @@ namespace CommonBoilerPlateEight.Domain.Services
                 {
                     _fileUploaderService.RemoveFile(customer.ProfilePictureURL);
                 }
-                var imageFileName = await _fileUploaderService.SaveFileAsync(model.ProfileImageFile, FileDirectoryConstants.Celebrity);
+                var imageFileName = await _fileUploaderService.SaveFileAsync(model.ProfileImageFile, FileDirectoryConstants.Customer);
                 customer.ProfilePictureURL = imageFileName;
             }
             _db.Customers.Update(customer);

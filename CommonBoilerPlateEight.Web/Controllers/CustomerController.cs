@@ -70,17 +70,17 @@ namespace CommonBoilerPlateEight.Web.Controllers
             try
             {
                 await PrepareViewBags();
-                var celebrityResponse = await _customerService.GetById(id);
+                var customer = await _customerService.GetById(id);
                 var editViewModel = new CustomerEditViewModel
                 {
-                    Id = celebrityResponse.Id,
-                    FullName = celebrityResponse.FullName,
-                    MobileNumber = celebrityResponse.MobileNumber,
-                    CountryId = celebrityResponse.CountryId,
-                    Email = celebrityResponse.Email,
-                    Gender = celebrityResponse.Gender,
-                    ProfileImage = celebrityResponse.ProfileImage,
-                    Description = celebrityResponse.Description
+                    Id = customer.Id,
+                    FullName = customer.FullName,
+                    MobileNumber = customer.MobileNumber,
+                    CountryId = customer.CountryId,
+                    Email = customer.Email,
+                    Gender = customer.Gender,
+                    ProfileImage = customer.ProfileImage,
+                    Description = customer.Description
                 };
                 return View(editViewModel);
             }
