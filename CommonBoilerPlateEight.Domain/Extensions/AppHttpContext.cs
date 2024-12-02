@@ -69,12 +69,6 @@ namespace CommonBoilerPlateEight.Domain.Extensions
             return type;
         }
 
-        public static int ValidateAndGetCelebrityId()
-        {
-            var type = GetType();
-            if (type != ClaimTypeConstant.UserTypeCelebrity) throw new CustomException("User is not a celebrity.");
-            return GetCurrentUserId();
-        }
 
         public static int ValidateAndGetCustomerId()
         {

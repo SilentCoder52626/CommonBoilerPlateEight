@@ -9,5 +9,7 @@ namespace CommonBoilerPlateEight.Domain.Constants
     public class RoleConstant
     {
         public const string RoleAdmin = "Admin";
+        public const string RoleUser = "User";
+        public const string RoleCustomer = "Customer";
     }
 }

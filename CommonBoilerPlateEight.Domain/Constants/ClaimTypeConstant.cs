@@ -17,7 +17,6 @@ namespace CommonBoilerPlateEight.Domain.Constants
 
 
         //CustomClaimTYpeValue
-        public const string UserTypeCelebrity = "Celebrity";
         public const string UserTypeCustomer = "Customer";
     }
 }

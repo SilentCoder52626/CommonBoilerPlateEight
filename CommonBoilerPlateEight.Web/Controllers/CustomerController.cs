@@ -4,6 +4,7 @@ using CommonBoilerPlateEight.Domain.Interfaces;
 using CommonBoilerPlateEight.Domain.Services;
 using CommonBoilerPlateEight.Web.Extensions;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CommonBoilerPlateEight.Web.Controllers
 {
@@ -19,6 +20,7 @@ namespace CommonBoilerPlateEight.Web.Controllers
             _countryService = countryService;
             _customerService = customerService;
         }
+        [Authorize(Policy = "Customer-Index")]
         public async Task<IActionResult> Index(CustomerFilterViewModel filter)
         {
             await PrepareViewBags();

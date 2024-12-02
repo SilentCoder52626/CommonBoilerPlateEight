@@ -49,7 +49,6 @@ namespace CommonBoilerPlateEight.Infrastructure.Configurations
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<ICustomerAuthService, CustomerAuthService>();
             services.AddScoped<ICustomerService, CustomerService>();
-            services.AddScoped<ICompanyTypeService, CompanyTypeService>();
 
         }
     }
