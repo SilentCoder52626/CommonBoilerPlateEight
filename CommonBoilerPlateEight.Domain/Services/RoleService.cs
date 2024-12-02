@@ -6,6 +6,10 @@ using CommonBoilerPlateEight.Domain.Interfaces;
 using CommonBoilerPlateEight.Domain.Models;
 using System.Data;
 using X.PagedList;
+using DomainModule.Dto;
+using System.IO;
+using System.Security.Claims;
+using CommonBoilerPlateEight.Domain.Helper;
 namespace CommonBoilerPlateEight.Domain.Services
 {
     public class RoleService : IRoleService
@@ -96,6 +100,151 @@ namespace CommonBoilerPlateEight.Domain.Services
             var roleWithSameName = await _roleManager.FindByNameAsync(roleName).ConfigureAwait(false);
             if (roleWithSameName != null && roleWithSameName != role) throw new CustomException($"Duplicate role {roleName}.");
         }
+        public async Task AssignPermission(string roleId, string permission)
+        {
 
+            using (var tx = TransactionScopeHelper.GetInstance())
+            {
+                var role = await _roleManager.FindByIdAsync(roleId).ConfigureAwait(false) ?? throw new CustomException("Role not found.");
+                var rolePermissions = await _roleManager.GetClaimsAsync(role).ConfigureAwait(false);
+                if (!rolePermissions.Any(x =>
+                x.Type == Permission.PermissionClaimType &&
+                         x.Value == permission))
+                {
+                    var roleClaim = await _roleManager.AddClaimAsync(role, new Claim(Permission.PermissionClaimType, permission)).ConfigureAwait(false);
+                    if (!roleClaim.Succeeded) throw new CustomException("Error to Assign Permission");
+                }
+                tx.Complete();
+            }
+
+        }
+        public async Task AssignAllPermissionOfModule(string roleId, string module)
+        {
+
+            using (var tx = TransactionScopeHelper.GetInstance())
+            {
+                var role = await _roleManager.FindByIdAsync(roleId).ConfigureAwait(false) ?? throw new CustomException("Role not found.");
+                var allPermissionsOfModule = PermissionHelper.GetPermission().PermissionDictionary.Where(a => a.Key == module).SelectMany(p => p.Value.Select(i => $"{p.Key}-{i}"));
+                var rolePermissions = await _roleManager.GetClaimsAsync(role).ConfigureAwait(false);
+
+                foreach (var permission in allPermissionsOfModule)
+                {
+                    if (!rolePermissions.Any(x => x.Type == Permission.PermissionClaimType && x.Value == permission))
+                    {
+                        var roleClaim = await _roleManager.AddClaimAsync(role, new Claim(Permission.PermissionClaimType, permission)).ConfigureAwait(false);
+                        if (!roleClaim.Succeeded) throw new CustomException("Error to Assign Permission");
+                    }
+                }
+                tx.Complete();
+
+            }
+
+        }
+
+
+        public async Task<PermissionDto> GetALLPermissions(string roleId)
+        {
+            try
+            {
+                var role = await _roleManager.FindByIdAsync(roleId) ?? throw new CustomException("Role not found.");
+                var rolesPermission = await _roleManager.GetClaimsAsync(role).ConfigureAwait(false);
+                var permissionDto = new PermissionDto() { RoleId = roleId };
+                var AllPermissions = PermissionHelper.GetPermission().PermissionDictionary.OrderBy(a => a.Key);
+
+                foreach (var permission in AllPermissions)
+                {
+                    var moduleWisePermission = new ModuleWisePermissionDto { Module = permission.Key };
+                    foreach (var data in permission.Value.OrderBy(a => a))
+                    {
+
+                        moduleWisePermission.PermissionData.Add(new PermissionValues()
+                        {
+                            IsAssigned = rolesPermission.Any(x =>
+                           x.Type == Permission.PermissionClaimType &&
+                             x.Value == permission.Key + "-" + data),
+                            Value = data
+                        });
+                    }
+                    permissionDto.Permissions.Add(moduleWisePermission);
+                }
+
+                return permissionDto;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
+        }
+        public async Task UnAssignPermission(string roleId, string permission)
+        {
+            using (var tx = TransactionScopeHelper.GetInstance())
+            {
+                var role = await _roleManager.FindByIdAsync(roleId).ConfigureAwait(false) ?? throw new CustomException("Role not found.");
+                var rolePermissions = await _roleManager.GetClaimsAsync(role).ConfigureAwait(false);
+                if (rolePermissions.Any(x =>
+                x.Type == Permission.PermissionClaimType &&
+                         x.Value == permission))
+                {
+                    var claim = rolePermissions.Where(x =>
+                x.Type == Permission.PermissionClaimType &&
+                         x.Value == permission).First();
+
+                    var response = await _roleManager.RemoveClaimAsync(role, claim);
+                    if (!response.Succeeded) throw new CustomException("Error to UnAssign Permission");
+                }
+                tx.Complete();
+
+            }
+        }
+
+        public async Task UnAssignPermissionOfModule(string roleId, string module)
+        {
+
+            using (var tx = TransactionScopeHelper.GetInstance())
+            {
+                var role = await _roleManager.FindByIdAsync(roleId).ConfigureAwait(false) ?? throw new CustomException("Role not found.");
+                var allPermissionsOfModule = PermissionHelper.GetPermission().PermissionDictionary.Where(a => a.Key == module).SelectMany(p => p.Value.Select(i => $"{p.Key}-{i}"));
+                var rolePermissions = await _roleManager.GetClaimsAsync(role).ConfigureAwait(false);
+
+                foreach (var permission in allPermissionsOfModule)
+                {
+                    if (rolePermissions.Any(x => x.Type == Permission.PermissionClaimType && x.Value == permission))
+                    {
+                        var claim = rolePermissions.Where(x =>
+                x.Type == Permission.PermissionClaimType &&
+                         x.Value == permission).First();
+
+                        var response = await _roleManager.RemoveClaimAsync(role, claim);
+
+                        if (!response.Succeeded) throw new CustomException("Error to Assign Permission");
+                    }
+                }
+                tx.Complete();
+            }
+        }
+        public async Task AssignPermissionInBulk(string roleName, List<string> permissions)
+        {
+
+            using (var tx = TransactionScopeHelper.GetInstance())
+            {
+                var role = await _roleManager.FindByNameAsync(roleName).ConfigureAwait(false) ?? throw new CustomException("Role not found.");
+                var rolePermissions = await _roleManager.GetClaimsAsync(role).ConfigureAwait(false);
+                foreach (var permission in permissions)
+                {
+                    if (!rolePermissions.Any(x =>
+                    x.Type == Permission.PermissionClaimType &&
+                             x.Value == permission))
+                    {
+                        var roleClaim = await _roleManager.AddClaimAsync(role, new Claim(Permission.PermissionClaimType, permission)).ConfigureAwait(false);
+                        if (!roleClaim.Succeeded) throw new CustomException("Error to Assign Permission");
+                    }
+                }
+                tx.Complete();
+            }
+
+        }
     }
 }

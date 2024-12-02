@@ -20,7 +20,7 @@ namespace CommonBoilerPlateEight.Web.Controllers
             _countryService = countryService;
             _customerService = customerService;
         }
-        [Authorize(Policy = "Customer-Index")]
+        [Authorize(Policy = "Customer-View")]
         public async Task<IActionResult> Index(CustomerFilterViewModel filter)
         {
             await PrepareViewBags();
