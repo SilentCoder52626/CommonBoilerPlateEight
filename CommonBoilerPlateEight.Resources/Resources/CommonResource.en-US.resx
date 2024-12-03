@@ -465,4 +465,7 @@
   <data name="Select" xml:space="preserve">
     <value>Select</value>
   </data>
+  <data name="Permission" xml:space="preserve">
+    <value>Permission</value>
+  </data>
 </root>

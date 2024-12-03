@@ -1,6 +1,6 @@
 ﻿
 
-namespace DomainModule.Dto
+namespace CommonBoilerPlateEight.Domain.Models.Permission
 {
     public static class PermissionHelper
     {

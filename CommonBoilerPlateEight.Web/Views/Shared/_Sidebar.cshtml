@@ -40,7 +40,13 @@
             
             <li class="nav-item nav-category">Setups</li>
 
-            <li class="nav-item" active-when-controllers="Country" active-when-actions="Index">
+            <li class="nav-item" active-when-controllers="Role" active-when-actions="Index,Create,Edit">
+                <a href="@Url.Action("Index", "Role")" class="nav-link">
+                    <i class="link-icon" data-feather="globe"></i>
+                    <span class="link-title">@_CommonLocalizer["Role"]</span>
+                </a>
+            </li>
+             <li class="nav-item" active-when-controllers="Country" active-when-actions="Index">
                 <a href="@Url.Action("Index", "Country")" class="nav-link">
                     <i class="link-icon" data-feather="globe"></i>
                     <span class="link-title">@_CommonLocalizer["Country"]</span>

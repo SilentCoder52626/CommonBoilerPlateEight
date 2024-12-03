@@ -6,10 +6,9 @@ using CommonBoilerPlateEight.Domain.Interfaces;
 using CommonBoilerPlateEight.Domain.Models;
 using System.Data;
 using X.PagedList;
-using DomainModule.Dto;
-using System.IO;
 using System.Security.Claims;
 using CommonBoilerPlateEight.Domain.Helper;
+using CommonBoilerPlateEight.Domain.Models.Permission;
 namespace CommonBoilerPlateEight.Domain.Services
 {
     public class RoleService : IRoleService

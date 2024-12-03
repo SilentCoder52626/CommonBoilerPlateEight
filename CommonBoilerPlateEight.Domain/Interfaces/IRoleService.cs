@@ -1,6 +1,6 @@
 ﻿
 using CommonBoilerPlateEight.Domain.Models;
-using DomainModule.Dto;
+using CommonBoilerPlateEight.Domain.Models.Permission;
 using System;
 using System.Collections.Generic;
 using System.Linq;
